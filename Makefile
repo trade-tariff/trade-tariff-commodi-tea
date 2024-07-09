@@ -1,5 +1,3 @@
-.PHONY: build run clean
-
 IMAGE_NAME := trade-tariff-commodi-tea
 SHELL := /usr/bin/env bash
 
