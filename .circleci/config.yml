@@ -6,14 +6,12 @@ filter-not-main: &filter-not-main
       ignore:
         - main
         - /^dependabot/(?!docker/).*/
-      only:
-        - FPO-318-deploy-with-ecs
 
 filter-main: &filter-main
   filters:
     branches:
       only:
-        - main
+        - FPO-318-deploy-with-ecs
 
 filter-release: &filter-release
   filters:
