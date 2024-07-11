@@ -42,8 +42,3 @@ variable "memory" {
   description = "Memory to allocate in MB. Powers of 2 only."
   type        = number
 }
-
-variable "rest_api_id" {
-  description = "API Gateway REST API ID to associate usage plans with."
-  type        = string
-}
