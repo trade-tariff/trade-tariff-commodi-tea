@@ -43,7 +43,7 @@ executors:
       - image: circleci/python:latest
   node-browsers:
     docker:
-      - image: cimg/node:21.2.0-browsers
+      - image: cimg/node:21.6.2-browsers
 
 jobs:
   linters:

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-
 import express, { type Request, type Response, type NextFunction } from 'express'
 
 import { HealthchecksController } from '../controllers/healthchecksController'
