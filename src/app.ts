@@ -12,8 +12,8 @@ initEnvironment()
 
 const app: Express = express()
 const isDev = app.get('env') === 'development'
-const sentryDsn = process.env.SENTRY_DSN ?? ''
-const _sentryEnv = process.env.SENTRY_ENVIRONMENT ?? ''
+// const sentryDsn = process.env.SENTRY_DSN ?? ''
+// const sentryEnv = process.env.SENTRY_ENVIRONMENT ?? ''
 const port = process.env.PORT ?? 8080
 
 async function loadDev (): Promise<void> {
@@ -27,13 +27,14 @@ async function loadDev (): Promise<void> {
   await loadDev()
 })()
 
-if (sentryDsn !== '') {
-  // Sentry.init({ dsn: sentryDsn, environment: sentryEnv })
-  // app.use(Sentry.Handlers.requestHandler())
-}
+// if (sentryDsn !== '') {
+// Sentry.init({ dsn: sentryDsn, environment: sentryEnv })
+// app.use(Sentry.Handlers.requestHandler())
+// }
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+app.use(httpRequestLoggingMiddleware())
 app.use(express.static(path.join(__dirname, '../public')))
 
 app.use('/', indexRouter)
