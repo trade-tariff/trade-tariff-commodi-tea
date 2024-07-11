@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "tsc",
-    "start": "node ./dist/app.js",
+    "start": "node ./dist/src/app.js",
     "dev": "ts-node src/app.ts",
     "test": "ts-node node_modules/jasmine/bin/jasmine",
     "lint": "eslint . --ext .ts",
