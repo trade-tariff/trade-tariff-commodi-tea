@@ -1,6 +1,5 @@
 import express, { type Express, type Request, type Response, type NextFunction } from 'express'
 import createError, { type HttpError } from 'http-errors'
-import * as Sentry from '@sentry/node'
 import path from 'path'
 import morgan from 'morgan'
 
@@ -12,8 +11,6 @@ initEnvironment()
 
 const app: Express = express()
 const isDev = app.get('env') === 'development'
-// const sentryDsn = process.env.SENTRY_DSN ?? ''
-// const sentryEnv = process.env.SENTRY_ENVIRONMENT ?? ''
 const port = process.env.PORT ?? 8080
 
 async function loadDev (): Promise<void> {
@@ -26,11 +23,6 @@ async function loadDev (): Promise<void> {
 (async () => {
   await loadDev()
 })()
-
-// if (sentryDsn !== '') {
-// Sentry.init({ dsn: sentryDsn, environment: sentryEnv })
-// app.use(Sentry.Handlers.requestHandler())
-// }
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))

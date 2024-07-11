@@ -33,7 +33,7 @@ export function httpRequestLoggingMiddleware (): any {
 export const logger = winston.createLogger({
   level: 'info',
   format: winston.format.simple(),
-  defaultMeta: { service: 'hub-backend' },
+  defaultMeta: { service: 'tea' },
   transports: [
     new winston.transports.Console()
   ]

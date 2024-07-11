@@ -51,10 +51,5 @@ module "service" {
     },
   ]
 
-  service_secrets_config = [
-    {
-      name      = "SENTRY_DSN"
-      valueFrom = data.aws_secretsmanager_secret.sentry_dsn.arn
-    },
-  ]
+  service_secrets_config = []
 }

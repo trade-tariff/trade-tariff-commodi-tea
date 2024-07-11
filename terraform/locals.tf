@@ -1,3 +1,3 @@
 locals {
-  service = "hub-backend"
+  service = "tea"
 }
