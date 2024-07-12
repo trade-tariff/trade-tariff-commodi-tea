@@ -1,6 +1,5 @@
 import express, { type Express, type Request, type Response, type NextFunction } from 'express'
 import createError, { type HttpError } from 'http-errors'
-import * as Sentry from '@sentry/node'
 import path from 'path'
 import morgan from 'morgan'
 
@@ -12,8 +11,6 @@ initEnvironment()
 
 const app: Express = express()
 const isDev = app.get('env') === 'development'
-const sentryDsn = process.env.SENTRY_DSN ?? ''
-const _sentryEnv = process.env.SENTRY_ENVIRONMENT ?? ''
 const port = process.env.PORT ?? 8080
 
 async function loadDev (): Promise<void> {
@@ -27,13 +24,9 @@ async function loadDev (): Promise<void> {
   await loadDev()
 })()
 
-if (sentryDsn !== '') {
-  // Sentry.init({ dsn: sentryDsn, environment: sentryEnv })
-  // app.use(Sentry.Handlers.requestHandler())
-}
-
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+app.use(httpRequestLoggingMiddleware())
 app.use(express.static(path.join(__dirname, '../public')))
 
 app.use('/', indexRouter)
@@ -62,7 +55,6 @@ app.use(function (err: HttpError, _req: Request, res: Response, _next: NextFunct
   } else {
     err.message = err.message ?? 'Internal Server Error'
     // In production, send a generic message
-    Sentry.captureException(err)
     res.status(statusCode).json({ error: 'Internal Server Error' })
   }
 })

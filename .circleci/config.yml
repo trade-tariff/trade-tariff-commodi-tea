@@ -1,0 +1,291 @@
+version: 2.1
+
+filter-not-main: &filter-not-main
+  filters:
+    branches:
+      ignore:
+        - main
+        - /^dependabot/(?!docker/).*/
+
+filter-main: &filter-main
+  filters:
+    branches:
+      only:
+        - main
+
+filter-release: &filter-release
+  filters:
+    tags:
+      only: /^release-202[\d-]+/
+    branches:
+      ignore:
+        - "/.*/"
+
+orbs:
+  aws-cli: circleci/aws-cli@2.0.3
+  gh: circleci/github-cli@1.0
+  node: circleci/node@5
+  slack: circleci/slack@4.3.0
+  tariff: trade-tariff/trade-tariff-ci-orb@0
+  terraform: circleci/terraform@3.2.1
+
+executors:
+  terraform:
+    docker:
+      - image: hashicorp/terraform:1.8.4
+    resource_class: small
+    working_directory: "/tmp/terraform"
+    environment:
+      TF_INPUT: 0
+      TF_IN_AUTOMATION: 1
+  python-executor:
+    docker:
+      - image: circleci/python:latest
+  node-browsers:
+    docker:
+      - image: cimg/node:21.6.2-browsers
+
+jobs:
+  linters:
+    docker:
+      - image: cimg/node:21.6.2
+    resource_class: small
+    steps:
+      - checkout
+      - run: "yarn install"
+      - run:
+          name: "Lint changed files"
+          command: |
+            yarn run lint
+
+  pre-commit:
+    executor: python-executor
+    steps:
+      - tariff/pre-commit:
+          terraform_version: 1.8.4
+
+  tests:
+    docker:
+      - image: cimg/node:21.6.2
+        environment:
+          NODE_ENVIRONMENT: test
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          command: make test
+
+  write-docker-tag:
+    parameters:
+      environment:
+        type: string
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run: echo "docker_tag = \"$(git rev-parse --short HEAD)\"" >> terraform/config_<< parameters.environment >>.tfvars
+      - persist_to_workspace:
+          root: .
+          paths:
+            - terraform/
+
+  fmt-validate-terraform:
+    executor: terraform
+    parameters:
+      environment:
+        type: string
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - terraform/init:
+          path: terraform/
+          backend_config_file: backends/<< parameters.environment >>.tfbackend
+      - terraform/fmt:
+          path: terraform/
+      - terraform/validate:
+          path: terraform/
+
+  plan-terraform:
+    executor: terraform
+    environment:
+      TF_CLI_ARGS: "-lock=false"
+    parameters:
+      environment:
+        type: string
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - terraform/init:
+          path: terraform/
+          backend_config_file: backends/<< parameters.environment >>.tfbackend
+      - terraform/plan:
+          path: terraform/
+          backend_config_file: backends/<< parameters.environment >>.tfbackend
+          var_file: config_<< parameters.environment >>.tfvars
+
+  apply-terraform:
+    executor: terraform
+    parameters:
+      environment:
+        type: string
+    steps:
+      - checkout
+      - run:
+          name: Add curl
+          command: apk --no-cache add curl jq
+      - attach_workspace:
+          at: .
+      - terraform/init:
+          path: terraform/
+          backend_config_file: backends/<< parameters.environment >>.tfbackend
+      - terraform/apply:
+          path: terraform/
+          backend_config_file: backends/<< parameters.environment >>.tfbackend
+          var_file: config_<< parameters.environment >>.tfvars
+          lock-timeout: 5m
+      - slack/notify:
+          channel: deployments
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          channel: deployments
+          event: pass
+          template: basic_success_1
+
+  notify-production-deployment:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - tariff/notify-production-release:
+          app-name: FPO Commodi-tea
+          slack-channel: trade_tariff
+          release-tag: $CIRCLE_TAG
+
+workflows:
+  version: 2
+
+  deploy-to-development:
+    jobs:
+      - write-docker-tag:
+          name: write-docker-tag-dev
+          environment: development
+          <<: *filter-not-main
+
+      - fmt-validate-terraform:
+          name: fmt-terraform-dev
+          context: trade-tariff-terraform-aws-development
+          environment: development
+          <<: *filter-not-main
+
+      - plan-terraform:
+          name: plan-terraform-dev
+          context: trade-tariff-terraform-aws-development
+          environment: development
+          requires:
+            - write-docker-tag-dev
+            - fmt-terraform-dev
+          <<: *filter-not-main
+
+      - tariff/build-and-push:
+          name: build-and-push-dev
+          context: trade-tariff-terraform-aws-development
+          environment: development
+          image_name: tariff-tea
+          ssm_parameter: "/development/TEA_ECR_URL"
+          <<: *filter-not-main
+
+      - linters:
+          <<: *filter-not-main
+
+      - pre-commit:
+          <<: *filter-not-main
+
+      - tests:
+          <<: *filter-not-main
+
+      - apply-terraform:
+          name: apply-terraform-dev
+          context: trade-tariff-terraform-aws-development
+          environment: development
+          requires:
+            - plan-terraform-dev
+            - build-and-push-dev
+            - tests
+            - linters
+            - pre-commit
+          <<: *filter-not-main
+
+  deploy-to-staging-and-production:
+    jobs:
+      - write-docker-tag:
+          name: write-docker-tag-staging
+          environment: staging
+
+      - write-docker-tag:
+          name: write-docker-tag-prod
+          environment: production
+
+      - plan-terraform:
+          name: plan-terraform-staging
+          context: trade-tariff-terraform-aws-staging
+          environment: staging
+          requires:
+            - write-docker-tag-staging
+          <<: *filter-not-main
+
+      - tariff/build-and-push:
+          name: build-and-push-live
+          context: trade-tariff-terraform-aws-staging
+          environment: staging
+          image_name: tariff-tea
+          ssm_parameter: "/staging/TEA_ECR_URL"
+          <<: *filter-main
+
+      - apply-terraform:
+          name: apply-terraform-staging
+          context: trade-tariff-terraform-aws-staging
+          environment: staging
+          requires:
+            - write-docker-tag-staging
+            - plan-terraform-staging
+            - build-and-push-live
+          <<: *filter-main
+
+      - plan-terraform:
+          name: plan-terraform-prod
+          context: trade-tariff-terraform-aws-production
+          environment: production
+          requires:
+            - write-docker-tag-prod
+          <<: *filter-not-main
+
+      - tariff/create-production-release:
+          name: create-production-release
+          context: trade-tariff-releases
+          image-name: tariff-fpo-commodi-tea-production
+          requires:
+          <<: *filter-main
+
+      - write-docker-tag:
+          name: write-docker-tag-prod-release
+          environment: production
+          <<: *filter-release
+
+      - apply-terraform:
+          name: apply-terraform-prod
+          context: trade-tariff-terraform-aws-production
+          environment: production
+          requires:
+            - write-docker-tag-prod-release
+          <<: *filter-release
+
+      # TODO: Work out why notifications produce failing parser errors (is this a JQ issue)
+      # - notify-production-deployment:
+      #     context: trade-tariff-releases
+      #     requires:
+      #       - apply-terraform-prod
+      #     <<: *filter-release

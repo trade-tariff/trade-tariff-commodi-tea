@@ -5,7 +5,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "tsc",
-    "start": "node ./dist/app.js",
+    "start": "node ./dist/src/app.js",
     "dev": "ts-node src/app.ts",
     "test": "ts-node node_modules/jasmine/bin/jasmine",
     "lint": "eslint . --ext .ts",
@@ -20,6 +20,7 @@
     "winston": "^3.13.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.6.0",
     "@sentry/types": "^7.109.0",
     "@types/cookie-parser": "^1.4.7",
     "@types/express": "^4.17.21",
@@ -33,10 +34,12 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
     "eslint-plugin-promise": "^6.0.0",
+    "globals": "^15.8.0",
     "jasmine": "^5.1.0",
     "jasmine-spec-reporter": "^7.0.0",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.3",
+    "typescript-eslint": "^7.16.0"
   }
 }
