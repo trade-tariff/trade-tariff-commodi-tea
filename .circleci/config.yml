@@ -76,22 +76,6 @@ jobs:
       - run:
           command: make test
 
-  e2etest:
-    executor: node-browsers
-    parameters:
-      environment:
-        type: string
-    steps:
-      - run:
-          name: run
-          command: |
-            git clone --depth=1 https://github.com/trade-tariff/trade-tariff-fpo-dev-hub-e2e
-            cd trade-tariff-fpo-dev-hub-e2e
-
-            yarn install
-            yarn playwright install --with-deps chromium
-            yarn run test-<<parameters.environment>>
-
   write-docker-tag:
     parameters:
       environment:
@@ -210,8 +194,8 @@ workflows:
           name: build-and-push-dev
           context: trade-tariff-terraform-aws-development
           environment: development
-          image_name: tariff-fpo-commodi-tea
-          ssm_parameter: "/development/FPO_DEVELOPER_HUB_BACKEND_ECR_URL"
+          image_name: tariff-tea
+          ssm_parameter: "/development/TEA_ECR_URL"
           <<: *filter-not-main
 
       - linters:
@@ -233,14 +217,6 @@ workflows:
             - tests
             - linters
             - pre-commit
-          <<: *filter-not-main
-
-      - e2etest:
-          name: e2etest-development
-          context: trade-tariff-fpo-integration-development
-          environment: development
-          requires:
-            - apply-terraform-dev
           <<: *filter-not-main
 
   deploy-to-staging-and-production:
@@ -265,8 +241,8 @@ workflows:
           name: build-and-push-live
           context: trade-tariff-terraform-aws-staging
           environment: staging
-          image_name: tariff-fpo-commodi-tea
-          ssm_parameter: "/staging/FPO_DEVELOPER_HUB_BACKEND_ECR_URL"
+          image_name: tariff-tea
+          ssm_parameter: "/staging/TEA_ECR_URL"
           <<: *filter-main
 
       - apply-terraform:
@@ -277,14 +253,6 @@ workflows:
             - write-docker-tag-staging
             - plan-terraform-staging
             - build-and-push-live
-          <<: *filter-main
-
-      - e2etest:
-          name: e2etest-staging
-          context: trade-tariff-fpo-integration-staging
-          environment: staging
-          requires:
-            - apply-terraform-staging
           <<: *filter-main
 
       - plan-terraform:
@@ -300,7 +268,6 @@ workflows:
           context: trade-tariff-releases
           image-name: tariff-fpo-commodi-tea-production
           requires:
-            - e2etest-staging
           <<: *filter-main
 
       - write-docker-tag:
