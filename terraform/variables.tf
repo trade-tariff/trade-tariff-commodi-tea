@@ -42,3 +42,8 @@ variable "memory" {
   description = "Memory to allocate in MB. Powers of 2 only."
   type        = number
 }
+
+variable "db_name" {
+  description = "Name of the database."
+  type        = string
+}

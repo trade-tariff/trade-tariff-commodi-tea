@@ -41,3 +41,21 @@ resource "aws_iam_policy" "task" {
   name   = "${local.service}-task-role-policy"
   policy = data.aws_iam_policy_document.task.json
 }
+
+data "aws_iam_policy_document" "read_db_secrets" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "secretsmanager:GetSecretValue",
+    ]
+    resources = [
+      data.aws_secretsmanager_secret.db_secret.arn
+    ]
+  }
+}
+
+resource "aws_iam_policy" "read_db_secret" {
+  name        = "${local.service}-read-db-secret-policy"
+  policy      = data.aws_iam_policy_document.read_db_secrets.json
+  description = "Allow read access to the db secret"
+}

@@ -51,5 +51,10 @@ module "service" {
     },
   ]
 
-  service_secrets_config = []
+  service_secrets_config = [
+    {
+      name       = "DB_SECRET"
+      value_from = local.db_secret_password
+    }
+  ]
 }
