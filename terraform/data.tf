@@ -30,10 +30,9 @@ data "aws_ssm_parameter" "ecr_url" {
 }
 
 data "aws_secretsmanager_secret" "db_secret" {
-  name = "${var.db_name}-connection-string"
+  name = "tariff-commodi-tea-secret"
 }
 
 data "aws_secretsmanager_secret_version" "db_secret_version" {
   secret_id = data.aws_secretsmanager_secret.db_secret.id
-
 }

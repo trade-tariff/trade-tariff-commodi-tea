@@ -6,7 +6,7 @@ Terraform to deploy the service into AWS.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | 1.8.4 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.4 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4 |
 
 ## Providers
@@ -46,7 +46,6 @@ Terraform to deploy the service into AWS.
 |------|-------------|------|---------|:--------:|
 | <a name="input_base_domain"></a> [base\_domain](#input\_base\_domain) | URL of the service. | `string` | n/a | yes |
 | <a name="input_cpu"></a> [cpu](#input\_cpu) | CPU units to use. | `number` | n/a | yes |
-| <a name="input_db_name"></a> [db\_name](#input\_db\_name) | Name of the database. | `string` | n/a | yes |
 | <a name="input_docker_tag"></a> [docker\_tag](#input\_docker\_tag) | Image tag to use. | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | Deployment environment. | `string` | n/a | yes |
 | <a name="input_max_capacity"></a> [max\_capacity](#input\_max\_capacity) | Largest number of tasks the service can scale-out to. | `number` | n/a | yes |
