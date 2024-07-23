@@ -30,7 +30,7 @@ data "aws_ssm_parameter" "ecr_url" {
 }
 
 data "aws_secretsmanager_secret" "db_secret" {
-  name = "tariff-commodi-tea-secret"
+  name = "tariff-commodi-tea-db-secret"
 }
 
 data "aws_secretsmanager_secret_version" "db_secret_version" {
