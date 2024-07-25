@@ -29,10 +29,6 @@ data "aws_ssm_parameter" "ecr_url" {
   name = "/${var.environment}/TEA_ECR_URL"
 }
 
-data "aws_secretsmanager_secret" "db_secret" {
-  name = "tariff-commodi-tea-db-secret"
+data "aws_secretsmanager_secret" "database_connection_string" {
+  name = "postgrescommoditea-connection-string"
 }
-
-# data "aws_secretsmanager_secret_version" "db_secret_version" {
-#   secret_id = data.aws_secretsmanager_secret.db_secret.id
-# }
