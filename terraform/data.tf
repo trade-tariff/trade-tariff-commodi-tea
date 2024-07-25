@@ -28,3 +28,7 @@ data "aws_kms_key" "secretsmanager_key" {
 data "aws_ssm_parameter" "ecr_url" {
   name = "/${var.environment}/TEA_ECR_URL"
 }
+
+data "aws_secretsmanager_secret" "database_connection_string" {
+  name = "postgrescommoditea-connection-string"
+}

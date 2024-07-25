@@ -51,5 +51,10 @@ module "service" {
     },
   ]
 
-  service_secrets_config = []
+  service_secrets_config = [
+    {
+      name      = "DATABASE_URL"
+      valueFrom = data.aws_secretsmanager_secret.database_connection_string.arn
+    }
+  ]
 }
