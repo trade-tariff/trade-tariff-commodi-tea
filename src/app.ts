@@ -44,7 +44,7 @@ const templateConfig: nunjucks.ConfigureOptions = {
   noCache: isDev
 }
 
-const nunjucksConfiguration = nunjucks.configure(
+nunjucks.configure(
   [
     'node_modules/govuk-frontend/dist',
     'views'
