@@ -1,7 +1,9 @@
 import express, { type Express, type Request, type Response, type NextFunction } from 'express'
 import createError, { type HttpError } from 'http-errors'
 import path from 'path'
+import favicon from 'serve-favicon'
 import morgan from 'morgan'
+import nunjucks from 'nunjucks'
 
 import indexRouter from './routes/index'
 import initEnvironment from './config/env'
@@ -24,10 +26,32 @@ async function loadDev (): Promise<void> {
   await loadDev()
 })()
 
+app.set('view engine', 'njk')
+
+app.use(favicon(path.join('public', 'favicon.ico')))
 app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: true }))
+
+app.use('/govuk', express.static('node_modules/govuk-frontend/dist/govuk'))
+app.use('/assets', express.static('node_modules/govuk-frontend/dist/govuk/assets'))
+app.use(express.static('public'))
 app.use(httpRequestLoggingMiddleware())
-app.use(express.static(path.join(__dirname, '../public')))
+
+const templateConfig: nunjucks.ConfigureOptions = {
+  autoescape: true,
+  watch: isDev,
+  express: app,
+  noCache: isDev
+}
+
+const nunjucksConfiguration = nunjucks.configure(
+  [
+    'node_modules/govuk-frontend/dist',
+    'views'
+  ],
+  templateConfig
+)
+// app.use(express.static(path.join(__dirname, '../public')))
 
 app.use('/', indexRouter)
 

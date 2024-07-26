@@ -1,0 +1,30 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">Commodi-tea ☕</h1>
+            <p class="govuk-body">Grab a cup of tea (or coffee) and help improve our commodity code identification tool by identifying product commodity codes from descriptions.</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>identify goods</li>
+                <li>sanity check our automated identification tool</li>
+                <li>suggest improvements</li>
+                
+            </ul>
+            {{ govukInsetText({
+                text: "It's more fun than pretty much everything else you've ever done.*"
+            }) }}
+            {{ govukButton({
+                text: "☕ Let's get cracking",
+                href: "/",
+                isStartButton: true
+            }) }}
+            
+            <p class="govuk-body">
+                * this is almost certainly not true
+            </p>
+        </div>
+    </div>
+{% endblock %}
