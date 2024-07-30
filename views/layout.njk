@@ -1,0 +1,72 @@
+{% extends "govuk/template.njk" %}
+
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/cookie-banner/macro.njk" import govukCookieBanner %}
+{% from "govuk/components/skip-link/macro.njk" import govukSkipLink %}
+{% from "govuk/components/header/macro.njk" import govukHeader %}
+{% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
+{% from "govuk/components/footer/macro.njk" import govukFooter %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
+
+{% block head %}<link rel="stylesheet" href="/govuk/govuk-frontend.min.css">{% endblock %}
+
+{% block header %}
+    {{ govukHeader({
+        homepageUrl: "https://www.gov.uk",
+        serviceName: "Commodi-tea",
+        serviceUrl: "/",
+        navigation: mainNavigation
+    }) }}
+{% endblock %}
+
+{%- set phaseBannerHtml %}
+    This is a new service – your <a class="govuk-link" href="{{ feedbackURL }}">feedback</a> will help us to improve it.
+{% endset %}
+{% block beforeContent %}
+    {{ govukPhaseBanner({
+        tag: {
+            text: "Beta"
+        },
+        html: phaseBannerHtml
+    }) }}
+{% endblock %}
+
+{% block footer %}
+    {{ govukFooter({
+        meta: {
+            items: [
+                {
+                    href: config.urls.apiDocs,
+                    text: "API Documentation"
+                },
+                {
+                    href: config.urls.feedback,
+                    text: "Feedback"
+                },
+                {
+                    href: "/privacyPolicy",
+                    text: "Privacy policy "
+                },
+                {
+                    href: "/cookies",
+                    text: "Cookies"
+                },
+                {
+                    href: config.urls.termsAndConditions,
+                    text: "Terms and conditions"
+                }
+            ]
+        }
+    }) }}
+{% endblock %}
+
+{% block bodyEnd %}
+  {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
+  <script type="module" src="/javascripts/govuk-frontend.min.js"></script>
+  <script type="module">
+    import { initAll } from '/javascripts/govuk-frontend.min.js'
+    initAll()
+  </script>
+{% endblock %}
+No newline at end of file
