@@ -266,7 +266,7 @@ workflows:
       - tariff/create-production-release:
           name: create-production-release
           context: trade-tariff-releases
-          image-name: tariff-fpo-commodi-tea-production
+          image-name: tariff-tea-production
           requires:
           <<: *filter-main
 
