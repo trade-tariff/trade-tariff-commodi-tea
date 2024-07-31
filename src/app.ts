@@ -65,21 +65,14 @@ app.use(function (err: HttpError, _req: Request, res: Response, _next: NextFunct
   res.locals.message = err.message
   res.locals.error = isDev ? err : {}
 
-  const statusCode = err.statusCode ?? 500
-
-  if (isDev) {
-    console.error(err)
-    // In development, you can send the full error
-    res.status(statusCode).contentType('application/json').json(
-      {
-        error: err,
-        stack: err.stack
-      }
-    )
-  } else {
-    err.message = err.message ?? 'Internal Server Error'
-    // In production, send a generic message
-    res.status(statusCode).json({ error: 'Internal Server Error' })
+  const statusCode: number = err.statusCode
+  res.status(statusCode)
+  switch (statusCode) {
+    case 404:
+      res.render('404')
+      break
+    default:
+      res.render('500')
   }
 })
 
