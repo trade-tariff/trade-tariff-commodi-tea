@@ -16,6 +16,11 @@ RUN yarn install --frozen-lockfile --production
 
 COPY --from=builder /app/dist /app/dist
 
+COPY public /app/public
+COPY sequelize /app/sequelize
+COPY .env.development /app/.env.development
+COPY .sequelizerc /app/.sequelizerc
+
 RUN addgroup -S tariff && \
   adduser -S tariff -G tariff && \
   chown -R tariff:tariff /app
@@ -26,4 +31,4 @@ ENV PORT=8080 \
 
 HEALTHCHECK CMD nc -z 0.0.0.0 $PORT
 
-CMD ["yarn", "run", "start"]
+CMD npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all && yarn run start

@@ -3,85 +3,130 @@
 Express app enabling gamification of description classification
 (converting a description to a commodity code) as part of continuous search improvemments.
 
-## commodi-tea App - Database Setup Guide
-
-This guide provides instructions on how to set up and use Sequelize with PostgreSQL for the commodi-tea app.
-
 ### Prerequisites
 
 - Node.js (v14 or higher)
-- npm or yarn
-- Postgres.app (for macOS users)
+- Yarn
 - Sequelize CLI
+- Docker
+- Docker Compose
 
-### Step 1: Install Postgres.app (macOS Only)
+### Setup
 
-Postgres.app is a full-featured PostgreSQL installation packaged as a standard Mac app.
+### Install Dependencies
 
-1. **Download and Install Postgres.app:**
-   - Go to [Postgres.app](https://postgresapp.com/) and download the latest version.
-   - Drag the app to your Applications folder and open it.
-   - Follow the on-screen instructions to initialize the database.
-
-### Step 2: Install Sequelize and Sequelize CLI
-
-In your project directory, install Sequelize and the Sequelize CLI:
+- In your project directory, install Sequelize and the Sequelize CLI:
 
 ```bash
 yarn add sequelize sequelize-cli
 ```
 
-### Step 3: Configure Environment Variables
+- Configure Environment Variables
 
-Create a .env file in the root directory and add your database credentials.
-
-```
-DB_USERNAME=
-DB_PASSWORD=
-DB_NAME=
-DB_HOST=
+```text
+Database credentials are provided in the .env.development file in the root directory for testing purpose.
 ```
 
-### Step 4: Create a model file
+### Create Models and Migrations
+
+- Create a Model
+
+```text
+model file has been created for testing purpose, you can delete it and recreate yours
+```
 
 ```bash
 npx sequelize model:generate --name User --attributes firstName:string,lastName:string,email:string
 ```
 
-### Step 5: Create a migration
+- Create a Migration
 
 ```bash
 npx sequelize migration:generate --name create-user
 ```
 
-### Step 6: Run migrations
+- Run migrations
+
+```text
+Migrations are automatically run when you use Docker Compose. To manually run migrations:
+```
 
 ```bash
 npx sequelize db:migrate
 ```
 
-### Step 7: Create a seeder
+- Create a Seeder
+
+```text
+seeder has been created for testing purpose, you can delete it and recreate your own
+```
 
 ```bash
 npx sequelize seed:generate --name demo-user
 ```
 
-### Step 8: Update the Seeder File
+- Update the Seeder File
 
-Edit the generated seed file in seeders/ directory to include the data you want to seed.
+```text
+Edit the generated seed file in `seeders/` directory to include the data you want to seed.
+```
 
-### Step 9: Run the seeder
+- Run the seeder
+
+```text
+Seed data is automatically applied when you use Docker Compose. To manually run the seeder:
+```
 
 ```bash
 npx sequelize db:seed:all
 ```
 
-### Step 10: Testing the Connection
+### Docker commands
 
-A testConnection.ts file is provided in the root directory to test the database connection. Run the test script:
+- Build and Run Containers
 
 ```bash
-yarn test-connection
+docker compose up --build -d
+```
+
+- Stop and Remove Containers
+
+```bash
+docker-compose down
+```
+
+### Access the Database using psql
+
+- Access the PostgreSQL Container
+
+```bash
+docker exec -it <db-container-name> psql -U <postgres-user> -d <postgres-db>
+```
+
+**Useful psql Commands**
+
+- List Tables
+
+```bash
+\dt
+```
+
+- View Table Content
+
+```bash
+SELECT * FROM <table-name>;
+```
+
+- View Table Structure
+
+```bash
+\d+ <table-name>
+```
+
+- Exit psql
+
+```bash
+\q
 ```
 
 ### Resources
