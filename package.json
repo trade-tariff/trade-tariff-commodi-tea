@@ -10,7 +10,10 @@
     "test": "ts-node node_modules/jasmine/bin/jasmine",
     "lint": "eslint . --ext .ts",
     "fix": "eslint . --ext .ts --fix",
-    "test-connection": "ts-node src/testConnection.ts"
+    "test-connection": "ts-node src/testConnection.ts",
+    "db:up": "docker compose up --build -d",
+    "db:create": "sequelize db:create",
+    "db:migrate": "sequelize db:migrate"
   },
   "dependencies": {
     "@sentry/node": "^7.109.0",
@@ -31,7 +34,8 @@
     "sequelize": "^6.37.3",
     "sequelize-cli": "^6.6.2",
     "serve-favicon": "^2.5.0",
-    "winston": "^3.13.0"
+    "winston": "^3.13.0",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.6.0",
@@ -53,7 +57,6 @@
     "jasmine": "^5.1.0",
     "jasmine-spec-reporter": "^7.0.0",
     "nodemon": "^3.1.0",
-    "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
     "typescript-eslint": "^7.16.0"
   }

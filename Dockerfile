@@ -14,6 +14,8 @@ WORKDIR /app
 COPY REVISION package.json yarn.lock /app/
 RUN yarn install --frozen-lockfile --production
 
+RUN yarn add ts-node
+
 COPY --from=builder /app/dist /app/dist
 
 COPY public /app/public
@@ -31,4 +33,6 @@ ENV PORT=8080 \
 
 HEALTHCHECK CMD nc -z 0.0.0.0 $PORT
 
-CMD npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all && yarn run start
+COPY --from=builder /app/node_modules/.bin/ts-node /app/node_modules/.bin/ts-node
+
+CMD npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all && yarn run start
