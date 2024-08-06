@@ -267,7 +267,7 @@ workflows:
           name: create-production-release
           context: trade-tariff-releases
           image-name: tariff-tea-production
-          requires:
+          requires: []
           <<: *filter-main
 
       - write-docker-tag:

@@ -10,7 +10,7 @@ services:
       - database
 
   database:
-    image: postgres:13
+    image: postgres:latest
     # restart: unless-stopped
     env_file:
       - .env.development
