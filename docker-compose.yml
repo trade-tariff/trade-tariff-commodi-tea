@@ -1,7 +1,7 @@
 services:
   app:
     build: .
-    # restart: unless-stopped
+    restart: unless-stopped
     env_file:
       - .env.development
     ports:
@@ -11,7 +11,7 @@ services:
 
   database:
     image: postgres:latest
-    # restart: unless-stopped
+    restart: unless-stopped
     env_file:
       - .env.development
     ports:
