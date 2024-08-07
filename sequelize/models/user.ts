@@ -1,28 +1,27 @@
-import { Model, DataTypes } from 'sequelize';
-import connection from '../connection';
-import Todo from './todos';
+import { Model, DataTypes } from 'sequelize'
+import connection from '../connection'
 
 interface UserAttributes {
-  id?: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
+  id?: number
+  firstName: string
+  lastName: string
+  email: string
+  password: string
 
-  updatedAt?: Date;
-  deletedAt?: Date;
-  createdAt?: Date;
+  updatedAt?: Date
+  deletedAt?: Date
+  createdAt?: Date
 }
 
 class User extends Model<UserAttributes> implements UserAttributes {
-  public id!: number;
-  public firstName!: string;
-  public lastName!: string;
-  public email!: string;
-  public password!: string;
+  public id!: number
+  public firstName!: string
+  public lastName!: string
+  public email!: string
+  public password!: string
 
-  public readonly updatedAt!: Date;
-  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date
+  public readonly createdAt!: Date
 }
 
 User.init(
@@ -31,39 +30,39 @@ User.init(
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.NUMBER,
+      type: DataTypes.NUMBER
     },
     firstName: {
       allowNull: false,
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     lastName: {
       allowNull: false,
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     email: {
       allowNull: false,
       unique: true,
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     password: {
       allowNull: false,
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
 
     createdAt: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: DataTypes.DATE
     },
     updatedAt: {
       allowNull: false,
-      type: DataTypes.DATE,
-    },
+      type: DataTypes.DATE
+    }
   },
   {
     sequelize: connection,
-    modelName: 'User',
+    modelName: 'User'
   }
-);
+)
 
-export default User;
+export default User

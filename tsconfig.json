@@ -20,7 +20,8 @@
     "src/**/*.ts",
     "spec/**/*.ts",
     ".eslintrc.js",
-    "globals.d.ts"
+    "globals.d.ts",
+    "sequelize/**/*"
   ],
   "exclude": [
     "node_modules",
