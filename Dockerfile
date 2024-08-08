@@ -15,6 +15,8 @@ COPY REVISION package.json yarn.lock /app/
 RUN yarn install --frozen-lockfile --production
 
 COPY --from=builder /app/dist /app/dist
+COPY public /app/public
+COPY views /app/views/
 
 RUN addgroup -S tariff && \
   adduser -S tariff -G tariff && \
