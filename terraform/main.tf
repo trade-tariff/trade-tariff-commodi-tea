@@ -26,6 +26,9 @@ module "service" {
   cpu    = var.cpu
   memory = var.memory
 
+  init_container         = true
+  init_container_command = local.init_command
+
   task_role_policy_arns = [
     aws_iam_policy.task.arn
   ]

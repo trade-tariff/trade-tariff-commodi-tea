@@ -5,13 +5,13 @@ run: clean build
 	source .env.development && yarn run start
 
 test:
-	yarn run test
+	yarn run ts-node node_modules/jasmine/bin/jasmine
 
 clean:
 	yarn run clean
 
 build:
-	yarn run build
+	yarn run tsc
 
 docker-build:
 	docker build -t $(IMAGE_NAME) .
@@ -36,3 +36,23 @@ docker-shell:
 		--name $(IMAGE_NAME)-shell \
 		--no-healthcheck \
 		-it $(IMAGE_NAME) /bin/sh
+
+create-development:
+	NODE_ENV=development npx sequelize-cli db:create
+
+create-test:
+	NODE_ENV=test npx sequelize-cli db:create
+
+migrate-development:
+	NODE_ENV=development npx sequelize-cli db:migrate
+
+migrate-test:
+	NODE_ENV=test npx sequelize-cli db:migrate
+
+migrate: migrate-development migrate-test
+
+migrate-production:
+	NODE_ENV=production npx sequelize-cli db:migrate
+
+seed:
+	NODE_ENV=development npx sequelize-cli db:seed:all

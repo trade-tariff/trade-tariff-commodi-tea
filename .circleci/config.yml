@@ -32,7 +32,7 @@ orbs:
 executors:
   terraform:
     docker:
-      - image: hashicorp/terraform:1.8.4
+      - image: hashicorp/terraform:1.9.2
     resource_class: small
     working_directory: "/tmp/terraform"
     environment:
@@ -62,7 +62,7 @@ jobs:
     executor: python-executor
     steps:
       - tariff/pre-commit:
-          terraform_version: 1.8.4
+          terraform_version: 1.9.2
 
   tests:
     docker:
@@ -267,7 +267,6 @@ workflows:
           name: create-production-release
           context: trade-tariff-releases
           image-name: tariff-tea-production
-          requires:
           <<: *filter-main
 
       - write-docker-tag:
