@@ -16,7 +16,6 @@ RUN yarn install --frozen-lockfile --production
 
 COPY --from=builder /app/dist /app/dist
 COPY public /app/public
-COPY src /app/src
 
 RUN addgroup -S tariff && \
   adduser -S tariff -G tariff && \
