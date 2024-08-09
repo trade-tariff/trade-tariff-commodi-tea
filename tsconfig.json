@@ -21,6 +21,7 @@
     "globals.d.ts",
     "spec/**/*.ts",
     "src/**/*.ts",
+    "src/**/*.js",
   ],
   "exclude": [
     "node_modules",
