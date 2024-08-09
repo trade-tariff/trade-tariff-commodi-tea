@@ -1,7 +1,8 @@
 # trade-tariff-commodi-tea
 
-Express app enabling gamification of description classification
-(converting a description to a commodity code) as part of continuous search improvemments.
+Express app enabling gamification of description
+classification (converting a description to a commodity code)
+as part of continuous search improvemments.
 
 ## Prerequisites
 
@@ -17,9 +18,35 @@ Express app enabling gamification of description classification
 
 - `yarn install`
 
-#### Create Models and Migrations
+#### Docker
 
-- Review `npx sequelize --help` for more commands (like creating the database).
+*Follow the intstructions
+[here](https://docs.dev.trade-tariff.service.gov.uk/manual/get-started.html#6-set-up-ott-docker)
+to use OTT Docker environment and docker-compose for local development*
+
+- Build and Run Containers
+
+```bash
+docker compose up --build -d
+```
+
+- Stop and Remove Containers
+
+```bash
+docker compose down
+```
+
+#### Sequelize
+
+- Review `npx sequelize --help` for more commands.
+
+- Create database.
+*You don't need to provide the database name in this command;
+it will be created dynamically based on the configuration in a configs.ts file.*
+
+```bash
+npx sequelize-cli db:create
+```
 
 - Create a Model.
 *The model has been created for testing purpose, you can delete it and recreate yours*
@@ -60,20 +87,6 @@ To manually run the seeder:*
 
 ```bash
 npx sequelize db:seed:all
-```
-
-#### Docker commands
-
-- Build and Run Containers
-
-```bash
-docker compose up --build -d
-```
-
-- Stop and Remove Containers
-
-```bash
-docker compose down
 ```
 
 ### Access the Database using psql
