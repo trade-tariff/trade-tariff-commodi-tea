@@ -1,9 +1,9 @@
 let rootFilePath
 
 if (process.env.NODE_ENV === "production") {
-  rootFilePath = ["dist", "src", "config"]
+  rootFilePath = ["dist", "src"]
 } else {
-  rootFilePath = ["src", "config"]
+  rootFilePath = ["src"]
 }
 
 const config = rootFilePath.concat(["config", "sequelize-cli.config.js"]).join("/");
