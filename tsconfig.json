@@ -17,10 +17,10 @@
     "experimentalDecorators": true
   },
   "include": [
-    "src/**/*.ts",
-    "spec/**/*.ts",
     ".eslintrc.js",
-    "globals.d.ts"
+    "globals.d.ts",
+    "spec/**/*.ts",
+    "src/**/*.ts",
   ],
   "exclude": [
     "node_modules",
