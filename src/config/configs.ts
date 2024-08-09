@@ -32,7 +32,13 @@ const configuration: Configuration = {
   production: {
     uri: envVars.DATABASE_URL ?? '',
     dialect: 'postgres',
-    ssl: true
+    ssl: true,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
   }
 }
 

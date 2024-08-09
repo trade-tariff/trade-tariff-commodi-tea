@@ -14,13 +14,15 @@
       ]
     },
     "outDir": "./dist",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "allowJs": true
   },
   "include": [
     ".eslintrc.js",
     "globals.d.ts",
     "spec/**/*.ts",
     "src/**/*.ts",
+    "src/**/*.js",
   ],
   "exclude": [
     "node_modules",

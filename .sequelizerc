@@ -1,8 +1,19 @@
-const path = require('path');
+let rootFilePath
+
+if (process.env.NODE_ENV === "production") {
+  rootFilePath = ["dist", "src"]
+} else {
+  rootFilePath = ["src"]
+}
+
+const config = rootFilePath.concat(["config", "sequelize-cli.config.js"]).join("/");
+const modelsPath = rootFilePath.concat(["models"]).join("/");
+const seedersPath = rootFilePath.concat(["seeders"]).join("/");
+const migrationsPath = rootFilePath.concat(["migrations"]).join("/");
 
 module.exports = {
-  'config': path.resolve('src', 'config', 'sequelize-cli.config.js'),
-  'models-path': path.resolve('src', 'models'),
-  'seeders-path': path.resolve('src', 'seeders'),
-  'migrations-path': path.resolve('src', 'migrations'),
+  'config': config,
+  'models-path': modelsPath,
+  'seeders-path': seedersPath,
+  'migrations-path': migrationsPath,
 };

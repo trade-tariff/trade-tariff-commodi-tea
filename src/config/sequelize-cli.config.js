@@ -17,11 +17,16 @@ if (environment === 'development' || environment === 'test') {
     dialect: config.dialect
   }
 } else {
-  url = `${config.uri}?ssl=true`
-  configuration = {
-    url: url,
-    dialect: config.dialect
+  const url = `${config.uri}?ssl=true`
+  const dialect = config.dialect
+  const dialectOptions = {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
   }
+
+  configuration = { url, dialect, dialectOptions }
 }
 
 module.exports = configuration

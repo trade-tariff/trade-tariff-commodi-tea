@@ -11,10 +11,11 @@ RUN yarn run build
 FROM node:22.4-alpine3.20
 WORKDIR /app
 
+COPY REVISION package.json yarn.lock /app/
+
 RUN yarn install --frozen-lockfile --production && \
   apk add --no-cache postgresql-client libpq-dev
 
-COPY REVISION package.json yarn.lock /app/
 COPY --from=builder /app/dist /app/dist
 COPY public /app/public
 COPY views /app/views/
