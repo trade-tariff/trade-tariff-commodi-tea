@@ -155,16 +155,6 @@ jobs:
           event: pass
           template: basic_success_1
 
-  notify-production-deployment:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - tariff/notify-production-release:
-          app-name: FPO Commodi-tea
-          slack-channel: trade_tariff
-          release-tag: $CIRCLE_TAG
-
 workflows:
   version: 2
 
@@ -283,10 +273,3 @@ workflows:
           requires:
             - write-docker-tag-prod-release
           <<: *filter-release
-
-      # TODO: Work out why notifications produce failing parser errors (is this a JQ issue)
-      # - notify-production-deployment:
-      #     context: trade-tariff-releases
-      #     requires:
-      #       - apply-terraform-prod
-      #     <<: *filter-release
