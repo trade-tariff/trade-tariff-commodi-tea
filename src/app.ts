@@ -4,6 +4,8 @@ import path from 'path'
 import favicon from 'serve-favicon'
 import morgan from 'morgan'
 import nunjucks from 'nunjucks'
+import { GoodsNomenclatureClient } from './utils/goodsNomenclatureClient'
+import { type Description, DescriptionSampler } from './utils/descriptionsSampler'
 
 import indexRouter from './routes/index'
 import initEnvironment from './config/env'
@@ -22,8 +24,23 @@ async function loadDev (): Promise<void> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
+// (async () => {
+//   await loadDev()
+// })()
+
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 (async () => {
-  await loadDev()
+  const descriptionSampler = await DescriptionSampler.build()
+  const description = descriptionSampler.sample()
+  // const description: Description = {
+  //   code: '69139010',
+  //   request_description: 'RATTAN BUNNY STORAGE_Natural_One Size',
+  //   score: '50.1314215362072',
+  //   request_digits: '8'
+  // }
+  const client = GoodsNomenclatureClient.build()
+
+  await client.get(description)
 })()
 
 app.set('view engine', 'njk')

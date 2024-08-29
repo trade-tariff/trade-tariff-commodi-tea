@@ -1,0 +1,13 @@
+score:
+  - name: "high scored descriptions"
+    percentage: 0.2
+    range: [500, 1000]
+  - name: "medium scored descriptions"
+    percentage: 0.2
+    range: [200, 499]
+  - name: "low scored descriptions"
+    percentage: 0.5
+    range: [100, 199]
+  - name: "really lowly scored descriptions"
+    percentage: 0.1
+    range: [0, 99]
