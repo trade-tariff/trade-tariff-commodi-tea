@@ -1,4 +1,5 @@
 import * as fs from 'fs'
+import * as path from 'path'
 import YAML from 'yaml'
 
 interface SamplingConfig {
@@ -20,8 +21,8 @@ export interface Description {
 }
 
 export class DescriptionSampler {
-  private static readonly SAMPLING_CONFIGURATION_FILE = 'src/config/descriptionSampling.yaml'
-  private static readonly DESCRIPTIONS_FILE = 'src/data/descriptions.json'
+  private static readonly SAMPLING_CONFIGURATION_FILE = path.join(__dirname, '../config/descriptionSampling.yaml')
+  private static readonly DESCRIPTIONS_FILE = path.join(__dirname, '../data/descriptions.json')
 
   descriptions: Description[] = []
 

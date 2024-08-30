@@ -20,6 +20,8 @@ COPY --from=builder /app/dist /app/dist
 COPY public /app/public
 COPY views /app/views/
 COPY .sequelizerc /app/.sequelizerc
+COPY src/data/descriptions.json /app/dist/src/data/descriptions.json
+COPY src/config/descriptionSampling.yaml /app/dist/src/config/descriptionSampling.yaml
 
 RUN addgroup -S tariff && \
   adduser -S tariff -G tariff && \
