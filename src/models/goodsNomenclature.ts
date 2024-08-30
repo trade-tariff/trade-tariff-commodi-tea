@@ -18,13 +18,9 @@ export class GoodsNomenclature {
   static build (response: any, sampleDescription: Description): GoodsNomenclature {
     const goodsNomenclature = new GoodsNomenclature()
     const attributes = response.data.attributes
-    console.debug('Fetching section description')
     const sectionDescription = GoodsNomenclature.getSectionDescription(response)
-    console.debug('Fetching chapter description')
     const chapterDescription = GoodsNomenclature.getChapterDescription(response)
-    console.debug('Fetching heading description')
     const headingDescription = GoodsNomenclature.getHeadingDescription(response)
-    console.debug('Fetching ancestor descriptions')
     const ancestorDescriptions = GoodsNomenclature.getAncestorDescriptions(response)
 
     let allAncestorDescriptions: string[] = [sectionDescription, chapterDescription]
@@ -39,7 +35,6 @@ export class GoodsNomenclature {
     goodsNomenclature.description = attributes.description
     goodsNomenclature.formattedDescription = attributes.formatted_description
     goodsNomenclature.ancestorDescriptions = allAncestorDescriptions
-    console.debug('Goods Nomenclature')
 
     return goodsNomenclature
   }
@@ -48,17 +43,12 @@ export class GoodsNomenclature {
     const relation = response.data.relationships.section.data
     const included = GoodsNomenclature.lookupIncluded(response, relation)
 
-    console.debug('Section')
-    console.debug(included)
-
     return included.attributes.title
   }
 
   private static getChapterDescription (response: any): string {
     const relation = response.data.relationships.chapter.data
     const included = GoodsNomenclature.lookupIncluded(response, relation)
-    console.debug('Chapter')
-    console.debug(included)
 
     return included.attributes.formatted_description
   }
@@ -70,21 +60,16 @@ export class GoodsNomenclature {
 
     const included = GoodsNomenclature.lookupIncluded(response, relation.data)
 
-    console.debug(included)
-
     return included.attributes.formatted_description
   }
 
   static getAncestorDescriptions (response: any): string[] {
-    console.debug('Ancestors')
     const relation = response.data.relationships.ancestors
-    console.debug(relation)
 
     if (relation === undefined) { return [] }
 
     return relation.data.map((relation: any) => {
       const ancestor = GoodsNomenclature.lookupIncluded(response, relation)
-      console.debug(ancestor)
       return ancestor.attributes.formatted_description
     })
   }
