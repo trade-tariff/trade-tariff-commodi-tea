@@ -32,14 +32,35 @@ export class GoodsNomenclatureClient {
   private async getEndpoint (sampleDescription: Description): Promise<any> {
     const isHeading = (sampleDescription.code.length === 6 && sampleDescription.code.endsWith('00')) ||
       (sampleDescription.code.length === 8 && sampleDescription.code.endsWith('0000'))
+    let response: AxiosResponse
     let normalisedCode = isHeading ? sampleDescription.code.slice(0, 4) : sampleDescription.code
-    let response: AxiosResponse = await this.client.get(`${GoodsNomenclatureClient.SEARCH_PATH}${normalisedCode}`)
+    console.debug(`Searching for ${normalisedCode}`)
 
-    if (response.status !== 200) {
-      normalisedCode = sampleDescription.code.slice(0, 5)
+    try {
       response = await this.client.get(`${GoodsNomenclatureClient.SEARCH_PATH}${normalisedCode}`)
+    } catch (error: any) {
+      console.debug(`Error: ${error.response.status}`)
+      console.debug(error.response)
+      if (error.response.status !== 200) {
+        normalisedCode = sampleDescription.code.slice(0, 6)
+        try {
+          response = await this.client.get(`${GoodsNomenclatureClient.SEARCH_PATH}${normalisedCode}`)
+        } catch (error: any) {
+          console.debug(`Second error: ${error.response.status}`)
+          console.debug(error.response)
+          if (error.response.status !== 200) {
+            throw new Error('Not found')
+          }
+
+          response = error.response
+        }
+      } else {
+        console.debug('Failed to find endpoint')
+        throw new Error('Not found')
+      }
     }
 
+    sampleDescription.normalised_code = normalisedCode
     return response.data
   }
 
@@ -48,9 +69,17 @@ export class GoodsNomenclatureClient {
       const endpoint: string = searchResponse.data.attributes.entry.endpoint
       const id: string = searchResponse.data.attributes.entry.id
       const response = await this.client.get(`/api/v2/${endpoint}/${id}`)
+      console.debug(`Found goods nomenclature ${sampleDescription.normalised_code} search response `)
+      if (sampleDescription.normalised_code !== sampleDescription.code) {
+        console.debug(response)
+      }
 
       return GoodsNomenclature.build(response.data, sampleDescription)
-    } catch (error) {
+    } catch (error: any) {
+      console.debug(sampleDescription)
+      console.debug(`Failed to find goods nomenclature ${sampleDescription.normalised_code} search response `)
+      console.debug(searchResponse)
+      console.debug(`Error: ${error}`)
       throw new Error('Not found')
     }
   }

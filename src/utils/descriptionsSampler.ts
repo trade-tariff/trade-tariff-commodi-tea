@@ -16,6 +16,7 @@ export interface Description {
   code: string
   score: string
   request_digits: '6' | '8'
+  normalised_code?: string
 }
 
 export class DescriptionSampler {

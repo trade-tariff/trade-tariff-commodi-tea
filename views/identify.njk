@@ -1,0 +1,71 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% block title %}Identify this goods nomenclature{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">Commodi-tea ☕</h1>
+            <p class="govuk-heading-l">Can you identify</p>
+            <h1 class="govuk-heading-l">"{{ goodsNomenclature.sampleDescription.request_description }}"</h1>
+            <p class="govuk-body">The tool identifies it as a commodity code: <b>{{ goodsNomenclature.sampleDescription.code }}</b></p>
+
+            <ul class="govuk-list">
+              {% for ancestorDescription in goodsNomenclature.ancestorDescriptions %}
+                  <li style="margin-left: {{ loop.index0 * 20 }}px;{% if (loop.index0) %} padding-left: 0.5em; list-style-type: '┕';{% endif %}">{{ ancestorDescription }}</li>
+              {% endfor %}
+
+              <li style="margin-left: {{ goodsNomenclature.ancestorDescriptions.length * 20 }}px; padding-left: 0.5em; list-style-type: '┕';"><b>{{ goodsNomenclature.formattedDescription }}</b></li>
+            </ul>
+
+            <p class="govuk-body">
+                Look it up on the <a href="https://www.trade-tariff.service.gov.uk/search?q={{ goodsNomenclature.sampleDescription.normalised_code }}" class="govuk-link">Online Trade Tariff</a>
+            </p>
+
+            {%- set cnCodeText %}
+               Is this the correct {{ goodsNomenclature.sampleDescription.request_digits }} digit CN Code?
+            {% endset %}
+            {{ govukRadios({
+                name: "correctCNCode",
+                fieldset: {
+                    legend: {
+                        text: cnCodeText,
+                        isPageHeading: true,
+                        classes: "govuk-fieldset__legend--l"
+                    }
+                },
+                items: [
+                    {
+                        value: "yes",
+                        text: "Yes - it's definitely correct",
+                        hint: {
+                            text: "There is enough information in the description that I'm confident it's the right code"
+                        }
+                    },
+                    {
+                        value: "maybe",
+                        text: "Maybe",
+                        hint: {
+                            text: "It might be the right code, but there's not really enough information to be sure"
+                        }
+                    },
+                    {
+                        value: "no",
+                        text: "No",
+                        hint: {
+                            text: "It's got it completely wrong!"
+                        }
+                    }
+                ]
+            }) }}
+
+            {{ govukButton({
+                text: "Continue",
+                href: "/confirmation"
+            }) }}
+        </div>
+    </div>
+{% endblock %}

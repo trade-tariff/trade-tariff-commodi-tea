@@ -1,10 +1,11 @@
 import express, { type Request, type Response, type NextFunction } from 'express'
 
 import { HealthchecksController } from '../controllers/healthchecksController'
-import { identifyPage } from '../controllers/identifyController'
+import { IdentifyController } from '../controllers/identifyController'
 
 const router = express.Router()
 const healthchecksController = new HealthchecksController()
+const identifyController = new IdentifyController()
 
 router.get('/healthcheck', (req, res) => { healthchecksController.show(req, res) })
 router.get('/healthcheckz', (req, res) => { healthchecksController.showz(req, res) })
@@ -14,4 +15,6 @@ export default router.get('/', (_req: Request, res: Response, _next: NextFunctio
   res.render('index')
 })
 
-router.get('/identifyPage', identifyPage)
+/* eslint-disable  @typescript-eslint/no-floating-promises */
+router.get('/identify', (req, res) => { identifyController.show(req, res) })
+/* eslint-enable @typescript-eslint/no-floating-promises */
