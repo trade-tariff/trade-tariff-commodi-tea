@@ -22,7 +22,7 @@ data "aws_security_group" "this" {
 }
 
 data "aws_kms_key" "secretsmanager_key" {
-  keyId = "alias/secretsmanager-key"
+  key_id = "alias/secretsmanager-key"
 }
 
 data "aws_ssm_parameter" "ecr_url" {
