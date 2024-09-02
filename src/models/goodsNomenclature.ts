@@ -3,14 +3,14 @@ import { type Description } from '../utils/descriptionsSampler'
 export class GoodsNomenclature {
   constructor () {
     this.sampleDescription = null
-    this.goods_nomenclature_item_id = ''
+    this.goodsNomenclatureItemId = ''
     this.description = ''
     this.formattedDescription = ''
     this.ancestorDescriptions = []
   }
 
   sampleDescription: Description | null
-  goods_nomenclature_item_id: string
+  goodsNomenclatureItemId: string
   description: string
   formattedDescription: string
   ancestorDescriptions: string[]
@@ -31,7 +31,7 @@ export class GoodsNomenclature {
     allAncestorDescriptions = allAncestorDescriptions.filter((description: string | null) => description !== null)
 
     goodsNomenclature.sampleDescription = sampleDescription
-    goodsNomenclature.goods_nomenclature_item_id = attributes.goods_nomenclature_item_id
+    goodsNomenclature.goodsNomenclatureItemId = attributes.goods_nomenclature_item_id
     goodsNomenclature.description = attributes.description
     goodsNomenclature.formattedDescription = attributes.formatted_description
     goodsNomenclature.ancestorDescriptions = allAncestorDescriptions
