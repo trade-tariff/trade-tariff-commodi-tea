@@ -11,7 +11,7 @@ clean:
 	yarn run clean
 
 build:
-	yarn run tsc && cp -r src/config dist/src && cp -r src/data/ dist/src
+	yarn run tsc && cp -r src/config dist/src && cp -r src/data/ dist/src/data
 
 docker-build:
 	docker build -t $(IMAGE_NAME) .
