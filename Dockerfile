@@ -2,11 +2,11 @@ FROM node:22.4-alpine3.20 AS builder
 WORKDIR /app
 
 COPY package.json yarn.lock /app/
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile && apk add --no-cache make bash
 
 COPY . /app/
 
-RUN yarn run build
+RUN make build
 
 FROM node:22.4-alpine3.20
 WORKDIR /app
@@ -20,8 +20,6 @@ COPY --from=builder /app/dist /app/dist
 COPY public /app/public
 COPY views /app/views/
 COPY .sequelizerc /app/.sequelizerc
-COPY src/data/descriptions.json /app/dist/src/data/descriptions.json
-COPY src/config/descriptionSampling.yaml /app/dist/src/config/descriptionSampling.yaml
 
 RUN addgroup -S tariff && \
   adduser -S tariff -G tariff && \

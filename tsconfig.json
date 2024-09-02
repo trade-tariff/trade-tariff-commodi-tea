@@ -23,6 +23,9 @@
     "spec/**/*.ts",
     "src/**/*.ts",
     "src/**/*.js",
+    "src/**/*.yaml",
+    "src/**/*.yml",
+    "src/**/*.json",
   ],
   "exclude": [
     "node_modules",
