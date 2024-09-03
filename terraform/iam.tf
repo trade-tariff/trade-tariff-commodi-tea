@@ -24,7 +24,8 @@ data "aws_iam_policy_document" "exec" {
       "secretsmanager:ListSecretVersionIds"
     ]
     resources = [
-      data.aws_secretsmanager_secret.database_connection_string.arn
+      data.aws_secretsmanager_secret.database_connection_string.arn,
+      data.aws_secretsmanager_secret.cookie_signing_secret.arn
     ]
   }
 }

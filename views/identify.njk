@@ -8,6 +8,7 @@
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+
             <h1 class="govuk-heading-xl">Commodi-tea ☕</h1>
             <p class="govuk-heading-l">Can you identify</p>
             <h1 class="govuk-heading-l">"{{ goodsNomenclature.sampleDescription.request_description }}"</h1>
@@ -28,6 +29,7 @@
             {%- set cnCodeText %}
                Is this the correct {{ goodsNomenclature.sampleDescription.request_digits }} digit CN Code?
             {% endset %}
+            <form action="/save" method="post">
             {{ govukRadios({
                 name: "correctCNCode",
                 fieldset: {
@@ -62,10 +64,11 @@
                 ]
             }) }}
 
-            {{ govukButton({
-                text: "Continue",
-                href: "/confirmation"
-            }) }}
+            <div class="govuk-button-group">
+                {{ govukButton({"text": "Continue", "type": "submit", "preventDoubleClick": true}) }}
+                {# <a class="govuk-link" href="/dashboard">Cancel</a> #}
+            </div>
+            </form>
         </div>
     </div>
 {% endblock %}

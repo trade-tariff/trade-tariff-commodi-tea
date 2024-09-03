@@ -10,6 +10,7 @@ const identifyController = new IdentifyController()
 router.get('/healthcheck', (req, res) => { healthchecksController.show(req, res) })
 router.get('/healthcheckz', (req, res) => { healthchecksController.showz(req, res) })
 router.get('/confirmation', (req, res) => { res.render('confirmation') })
+router.get('/improve', (req, res) => { res.render('improve') })
 
 export default router.get('/', (_req: Request, res: Response, _next: NextFunction) => {
   res.render('index')
@@ -17,4 +18,5 @@ export default router.get('/', (_req: Request, res: Response, _next: NextFunctio
 
 /* eslint-disable  @typescript-eslint/no-floating-promises */
 router.get('/identify', (req, res) => { identifyController.show(req, res) })
+router.post('/save', (req, res) => { identifyController.create(req, res) })
 /* eslint-enable @typescript-eslint/no-floating-promises */

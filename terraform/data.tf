@@ -32,3 +32,7 @@ data "aws_ssm_parameter" "ecr_url" {
 data "aws_secretsmanager_secret" "database_connection_string" {
   name = "postgrescommoditea-connection-string"
 }
+
+data "aws_secretsmanager_secret" "cookie_signing_secret" {
+  name = "commodi-tea-cookie-signing-secret"
+}

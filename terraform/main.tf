@@ -58,6 +58,10 @@ module "service" {
     {
       name      = "DATABASE_URL"
       valueFrom = data.aws_secretsmanager_secret.database_connection_string.arn
+    },
+    {
+      name      = "COOKIE_SIGNING_SECRET"
+      valueFrom = data.aws_secretsmanager_secret.cookie_signing_secret.arn
     }
   ]
 }
