@@ -10,7 +10,7 @@ const identifyController = new IdentifyController()
 router.get('/healthcheck', (req, res) => { healthchecksController.show(req, res) })
 router.get('/healthcheckz', (req, res) => { healthchecksController.showz(req, res) })
 router.get('/confirmation', (req, res) => { res.render('confirmation') })
-router.get('/improve', (req, res) => { res.render('improve') })
+router.get('/improve/:identificationId', (req, res) => { res.render('improve') })
 
 export default router.get('/', (_req: Request, res: Response, _next: NextFunction) => {
   res.render('index')

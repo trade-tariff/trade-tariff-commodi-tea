@@ -26,26 +26,22 @@ export class IdentifyController {
 
   public async create (req: Request, res: Response): Promise<void> {
     const session = req.session ?? {}
-    console.log(session.goodsNomenclature)
-    if (req.body.correctCNCode === 'yes' || req.body.correctCNCode === 'maybe') {
-      // save the answer
-      await Identification.create({
-        classifiedDescription: { request_description: session.goodsNomenclature.sampleDescription.request_description },
-        classifiedDescriptionId: session.goodsNomenclature.goodsNomenclatureItemId,
-        userId: 134,
-        state: 'completed',
-        answer: {
-          correctCNCode: req.body.correctCNCode,
-          code: session.goodsNomenclature.sampleDescription.code,
-          score: session.goodsNomenclature.sampleDescription.score,
-          request_digits: session.goodsNomenclature.sampleDescription.request_digits,
-          normalised_code: session.goodsNomenclature.sampleDescription.normalised_code
-        }
-      })
+    const answer = req.body.correctCNCode
+    const newIdentification = await Identification.create({
+      classifiedDescription: session.goodsNomenclature.sampleDescription,
+      classifiedDescriptionId: session.goodsNomenclature.goodsNomenclatureItemId,
+      userId: 134,
+      state: 'completed',
+      answer: {
+        answer
+      }
+    })
+    console.log(newIdentification.id)
+    if (answer === 'yes' || answer === 'maybe') {
       session.goodsNomenclature = []
       res.redirect('/confirmation')
     } else {
-      res.redirect('/improve')
+      res.redirect('/improve/' + newIdentification.id)
     }
   }
 }

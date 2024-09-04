@@ -1,7 +1,9 @@
 import { Model, DataTypes } from 'sequelize'
 import connection from '../config/connection'
 
-class Identification extends Model {}
+class Identification extends Model {
+  id?: number
+}
 
 Identification.init({
   id: {
