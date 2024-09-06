@@ -12,8 +12,6 @@ import authRouter from './routes/auth'
 import initEnvironment from './config/env'
 import { httpRequestLoggingMiddleware, logger } from './config/logging'
 
-
-
 initEnvironment()
 
 const app: Express = express()
