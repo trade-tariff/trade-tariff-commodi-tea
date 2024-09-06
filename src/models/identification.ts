@@ -2,18 +2,16 @@ import { Model, DataTypes } from 'sequelize'
 import connection from '../config/connection'
 
 class Identification extends Model {
-  id!: number
-  classifiedDescription!: Record<string, unknown>
-  classifiedDescriptionId!: number
-  userId!: number
-  state!: 'pending' | 'completed'
-  answer!: Record<string, unknown>
-  createdAt!: Date
-  updatedAt!: Date
+  id?: number
 }
 
 Identification.init({
-  id: DataTypes.BIGINT,
+  id: {
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+    type: DataTypes.BIGINT
+  },
   classifiedDescription: DataTypes.JSONB,
   classifiedDescriptionId: DataTypes.BIGINT,
   userId: DataTypes.BIGINT,

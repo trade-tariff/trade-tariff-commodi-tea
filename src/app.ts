@@ -1,4 +1,6 @@
 import express, { type Express, type Request, type Response, type NextFunction } from 'express'
+import cookieSession from 'cookie-session'
+import cookieParser from 'cookie-parser'
 import createError, { type HttpError } from 'http-errors'
 import path from 'path'
 import favicon from 'serve-favicon'
@@ -14,6 +16,7 @@ initEnvironment()
 const app: Express = express()
 const isDev = app.get('env') === 'development'
 const port = process.env.PORT ?? 8080
+const cookieSigningSecret = process.env.COOKIE_SIGNING_SECRET ?? ''
 
 async function loadDev (): Promise<void> {
   if (isDev) {
@@ -52,7 +55,12 @@ nunjucks.configure(
   templateConfig
 )
 // app.use(express.static(path.join(__dirname, '../public')))
-
+app.use(cookieSession({
+  name: 'session',
+  keys: [cookieSigningSecret],
+  maxAge: 24 * 60 * 60 * 1000
+}))
+app.use(cookieParser(cookieSigningSecret))
 app.use('/', indexRouter)
 
 // catch 404 and forward to error handler
