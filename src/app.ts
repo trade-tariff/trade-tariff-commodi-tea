@@ -8,8 +8,11 @@ import morgan from 'morgan'
 import nunjucks from 'nunjucks'
 
 import indexRouter from './routes/index'
+import authRouter from './routes/auth'
 import initEnvironment from './config/env'
 import { httpRequestLoggingMiddleware, logger } from './config/logging'
+
+
 
 initEnvironment()
 
@@ -39,6 +42,8 @@ app.use('/govuk', express.static('node_modules/govuk-frontend/dist/govuk'))
 app.use('/assets', express.static('node_modules/govuk-frontend/dist/govuk/assets'))
 app.use(express.static('public'))
 app.use(httpRequestLoggingMiddleware())
+
+app.use('/auth', authRouter)
 
 const templateConfig: nunjucks.ConfigureOptions = {
   autoescape: true,
