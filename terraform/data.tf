@@ -36,3 +36,21 @@ data "aws_secretsmanager_secret" "database_connection_string" {
 data "aws_secretsmanager_secret" "cookie_signing_secret" {
   name = "commodi-tea-cookie-signing-secret"
 }
+
+data "aws_cognito_user_pool" "this" {
+  name = "commodi-tea-user-pool"
+}
+
+data "aws_region" "current" {}
+
+data "aws_secretsmanager_secret" "cognito_open_id_client_id" {
+  name = "tea-cognito-client-id"
+}
+
+data "aws_secretsmanager_secret" "cognito_open_id_client_secret" {
+  name = "tea-cognito-client-secret"
+}
+
+data "aws_secretsmanager_secret" "cognito_open_id_secret" {
+  name = "tea-cognito-secret"
+}

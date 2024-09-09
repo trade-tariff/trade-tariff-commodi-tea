@@ -8,40 +8,17 @@ import morgan from 'morgan'
 import nunjucks from 'nunjucks'
 
 import indexRouter from './routes/index'
-import authRouter from './routes/auth'
 import initEnvironment from './config/env'
+import { configureAuth } from './config/cognitoAuth'
 import { httpRequestLoggingMiddleware, logger } from './config/logging'
 
 initEnvironment()
 
 const app: Express = express()
+
 const isDev = app.get('env') === 'development'
 const port = process.env.PORT ?? 8080
 const cookieSigningSecret = process.env.COOKIE_SIGNING_SECRET ?? ''
-
-async function loadDev (): Promise<void> {
-  if (isDev) {
-    app.use(morgan('dev'))
-  }
-}
-
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-(async () => {
-  await loadDev()
-})()
-
-app.set('view engine', 'njk')
-
-app.use(favicon(path.join('public', 'favicon.ico')))
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-
-app.use('/govuk', express.static('node_modules/govuk-frontend/dist/govuk'))
-app.use('/assets', express.static('node_modules/govuk-frontend/dist/govuk/assets'))
-app.use(express.static('public'))
-app.use(httpRequestLoggingMiddleware())
-
-app.use('/auth', authRouter)
 
 const templateConfig: nunjucks.ConfigureOptions = {
   autoescape: true,
@@ -50,6 +27,35 @@ const templateConfig: nunjucks.ConfigureOptions = {
   noCache: isDev
 }
 
+const nunjucksConfiguration = nunjucks.configure(
+  [
+    'node_modules/govuk-frontend/dist',
+    'views'
+  ],
+  templateConfig
+)
+
+if (isDev) {
+  app.use(morgan('dev'))
+  nunjucksConfiguration.addGlobal('baseURL', `http://localhost:${port}`)
+} else {
+  const cognitoAuth = configureAuth()
+  app.use(httpRequestLoggingMiddleware())
+  app.use(cognitoAuth.middleware)
+  nunjucksConfiguration.addGlobal('baseURL', cognitoAuth.baseURL)
+}
+
+app.disable('x-powered-by')
+
+app.set('view engine', 'njk')
+
+app.use(favicon(path.join('public', 'favicon.ico')))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use('/govuk', express.static('node_modules/govuk-frontend/dist/govuk'))
+app.use('/assets', express.static('node_modules/govuk-frontend/dist/govuk/assets'))
+app.use(express.static('public'))
+
 nunjucks.configure(
   [
     'node_modules/govuk-frontend/dist',
@@ -57,13 +63,14 @@ nunjucks.configure(
   ],
   templateConfig
 )
-// app.use(express.static(path.join(__dirname, '../public')))
+app.use(express.static(path.join(__dirname, '../public')))
 app.use(cookieSession({
   name: 'session',
   keys: [cookieSigningSecret],
   maxAge: 24 * 60 * 60 * 1000
 }))
 app.use(cookieParser(cookieSigningSecret))
+
 app.use('/', indexRouter)
 
 // catch 404 and forward to error handler

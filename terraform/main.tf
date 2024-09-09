@@ -41,12 +41,28 @@ module "service" {
 
   service_environment_config = [
     {
-      name  = "PORT"
-      value = "8080"
+      name  = "COGNITO_OPEN_ID_BASE_URL"
+      value = "http://tea.${var.base_domain}"
+    },
+    {
+      name  = "COGNITO_OPEN_ID_CALLBACK_PATH"
+      value = "/auth/redirect"
+    },
+    {
+      name  = "COGNITO_OPEN_ID_ISSUER_BASE_URL"
+      value = local.cognito_pool_url
     },
     {
       name  = "GOVUK_APP_DOMAIN"
       value = "tea.${var.base_domain}"
+    },
+    {
+      name  = "LOG_LEVEL"
+      value = var.log_level
+    },
+    {
+      name  = "PORT"
+      value = "8080"
     },
     {
       name  = "SENTRY_ENVIRONMENT"
@@ -62,6 +78,18 @@ module "service" {
     {
       name      = "COOKIE_SIGNING_SECRET"
       valueFrom = data.aws_secretsmanager_secret.cookie_signing_secret.arn
-    }
+    },
+    {
+      name  = "COGNITO_OPEN_ID_CLIENT_ID"
+      value = data.aws_secretsmanager_secret.cognito_open_id_client_id.secret_string
+    },
+    {
+      name  = "COGNITO_OPEN_ID_CLIENT_SECRET"
+      value = data.aws_secretsmanager_secret.cognito_open_id_client_secret.secret_string
+    },
+    {
+      name  = "COGNITO_OPEN_ID_SECRET"
+      value = data.aws_secretsmanager_secret.cognito_open_id_secret.secret_string
+    },
   ]
 }

@@ -36,9 +36,8 @@ export const configureAuth = (): ScpConfiguration => {
     },
     authRequired: true,
     afterCallback: async (_req: any, _res: any, session: any, _decodedState: any) => {
-      console.log('Session:', session)
-      console.log(`${issuerBaseURL}/userinfo`)
-      console.log(`Bearer ${session.access_token}`)
+      logger.debug('Session:', session)
+      logger.debug(`${issuerBaseURL}/userinfo`)
       try {
         const userProfileResponse = await fetch(`${issuerBaseURL}/userinfo`, {
           headers: {
@@ -59,7 +58,7 @@ export const configureAuth = (): ScpConfiguration => {
       }
     }
   }
-  console.log('Configuration:', configuration)
+  logger.debug('Configuration:', configuration)
   const configuredAuth = auth(configuration)
 
   return {
