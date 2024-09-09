@@ -36,12 +36,13 @@ export class IdentifyController {
         answer
       }
     })
-    console.log(newIdentification.id)
+
     if (answer === 'yes' || answer === 'maybe') {
       session.goodsNomenclature = []
       res.redirect('/confirmation')
     } else {
-      res.redirect('/improve/' + newIdentification.id)
+      session.newIdentificationId = newIdentification.id
+      res.render('improve', { session })
     }
   }
 }
