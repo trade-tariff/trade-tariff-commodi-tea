@@ -49,6 +49,10 @@ module "service" {
       value = "/auth/redirect"
     },
     {
+      name  = "COGNITO_OPEN_ID_CUSTOM_DOMAIN"
+      value = local.cognito_custom_domain
+    },
+    {
       name  = "COGNITO_OPEN_ID_ISSUER_BASE_URL"
       value = local.cognito_pool_url
     },

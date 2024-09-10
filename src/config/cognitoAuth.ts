@@ -8,6 +8,7 @@ interface ScpConfiguration {
 }
 
 export const configureAuth = (): ScpConfiguration => {
+  const customDomain = process.env.COGNITO_OPEN_ID_CUSTOM_DOMAIN ?? undefined
   const issuerBaseURL = process.env.COGNITO_OPEN_ID_ISSUER_BASE_URL ?? undefined
   const clientID = process.env.COGNITO_OPEN_ID_CLIENT_ID ?? undefined
   const clientSecret = process.env.COGNITO_OPEN_ID_CLIENT_SECRET ?? undefined
@@ -36,10 +37,11 @@ export const configureAuth = (): ScpConfiguration => {
     },
     authRequired: true,
     afterCallback: async (_req: any, _res: any, session: any, _decodedState: any) => {
-      logger.debug('Session:', session)
-      logger.debug(`${issuerBaseURL}/userinfo`)
       try {
-        const userProfileResponse = await fetch(`${issuerBaseURL}/userinfo`, {
+        const url = `${customDomain}/oauth2/userinfo`
+        logger.debug('Session:', session)
+        logger.debug(`url: ${url}`)
+        const userProfileResponse = await fetch(url, {
           headers: {
             Authorization: `Bearer ${session.access_token}`
           }

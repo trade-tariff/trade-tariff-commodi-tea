@@ -38,10 +38,16 @@ const nunjucksConfiguration = nunjucks.configure(
 if (isDev) {
   app.use(morgan('dev'))
   nunjucksConfiguration.addGlobal('baseURL', `http://localhost:${port}`)
+
+  logger.debug('Cognito Open ID Enabled:', process.env.COGNITO_OPEN_ID_ENABLED)
+  if (process.env.COGNITO_OPEN_ID_ENABLED === 'true') {
+    const cognitoAuth = configureAuth()
+    app.use(cognitoAuth.middleware)
+  }
 } else {
   const cognitoAuth = configureAuth()
-  app.use(httpRequestLoggingMiddleware())
   app.use(cognitoAuth.middleware)
+  app.use(httpRequestLoggingMiddleware())
   nunjucksConfiguration.addGlobal('baseURL', cognitoAuth.baseURL)
 }
 
