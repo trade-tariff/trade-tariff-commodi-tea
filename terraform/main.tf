@@ -84,16 +84,16 @@ module "service" {
       valueFrom = data.aws_secretsmanager_secret.cookie_signing_secret.arn
     },
     {
-      name  = "COGNITO_OPEN_ID_CLIENT_ID"
-      value = data.aws_secretsmanager_secret_version.cognito_open_id_client_id_version.secret_string
+      name      = "COGNITO_OPEN_ID_CLIENT_ID"
+      valueFrom = data.aws_secretsmanager_secret_version.cognito_open_id_client_id_version.secret_string
     },
     {
-      name  = "COGNITO_OPEN_ID_CLIENT_SECRET"
-      value = data.aws_secretsmanager_secret_version.cognito_open_id_client_secret_version.secret_string
+      name      = "COGNITO_OPEN_ID_CLIENT_SECRET"
+      valueFrom = data.aws_secretsmanager_secret_version.cognito_open_id_client_secret_version.secret_string
     },
     {
-      name  = "COGNITO_OPEN_ID_SECRET"
-      value = data.aws_secretsmanager_secret_version.cognito_open_id_secret_version.secret_string
+      name      = "COGNITO_OPEN_ID_SECRET"
+      valueFrom = data.aws_secretsmanager_secret_version.cognito_open_id_secret_version.secret_string
     },
   ]
 }
