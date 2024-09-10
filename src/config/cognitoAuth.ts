@@ -16,6 +16,7 @@ export const configureAuth = (): CognitoConfiguration => {
   const callback = process.env.COGNITO_OPEN_ID_CALLBACK_PATH ?? undefined
   const audience = process.env.COGNITO_OPEN_ID_BASE_URL ?? undefined
 
+  if (customDomain === undefined) throw new Error('COGNITO_OPEN_ID_CUSTOM_DOMAIN undefined.')
   if (issuerBaseURL === undefined) throw new Error('COGNITO_OPEN_ID_ISSUER_BASE_URL undefined.')
   if (clientID === undefined) throw new Error('COGNITO_OPEN_ID_CLIENT_ID undefined.')
   if (clientSecret === undefined) throw new Error('COGNITO_OPEN_ID_CLIENT_SECRET undefined.')

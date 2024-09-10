@@ -47,22 +47,10 @@ data "aws_secretsmanager_secret" "cognito_open_id_client_id" {
   name = "tea-cognito-client-id"
 }
 
-data "aws_secretsmanager_secret_version" "cognito_open_id_client_id_version" {
-  secret_id = data.aws_secretsmanager_secret.cognito_open_id_client_id.id
-}
-
 data "aws_secretsmanager_secret" "cognito_open_id_client_secret" {
   name = "tea-cognito-client-secret"
 }
 
-data "aws_secretsmanager_secret_version" "cognito_open_id_client_secret_version" {
-  secret_id = data.aws_secretsmanager_secret.cognito_open_id_client_secret.id
-}
-
 data "aws_secretsmanager_secret" "cognito_open_id_secret" {
   name = "tea-cognito-secret"
-}
-
-data "aws_secretsmanager_secret_version" "cognito_open_id_secret_version" {
-  secret_id = data.aws_secretsmanager_secret.cognito_open_id_secret.id
 }
