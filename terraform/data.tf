@@ -37,7 +37,7 @@ data "aws_secretsmanager_secret" "cookie_signing_secret" {
   name = "commodi-tea-cookie-signing-secret"
 }
 
-data "aws_cognito_user_pool" "this" {
+data "aws_cognito_user_pools" "this" {
   name = "commodi-tea-user-pool"
 }
 
@@ -47,10 +47,22 @@ data "aws_secretsmanager_secret" "cognito_open_id_client_id" {
   name = "tea-cognito-client-id"
 }
 
+data "aws_secretsmanager_secret_version" "cognito_open_id_client_id_version" {
+  secret_id = data.aws_secretsmanager_secret.cognito_open_id_client_id.id
+}
+
 data "aws_secretsmanager_secret" "cognito_open_id_client_secret" {
   name = "tea-cognito-client-secret"
 }
 
+data "aws_secretsmanager_secret_version" "cognito_open_id_client_secret_version" {
+  secret_id = data.aws_secretsmanager_secret.cognito_open_id_client_secret.id
+}
+
 data "aws_secretsmanager_secret" "cognito_open_id_secret" {
   name = "tea-cognito-secret"
+}
+
+data "aws_secretsmanager_secret_version" "cognito_open_id_secret_version" {
+  secret_id = data.aws_secretsmanager_secret.cognito_open_id_secret.id
 }

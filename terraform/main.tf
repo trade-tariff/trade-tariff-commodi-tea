@@ -81,15 +81,15 @@ module "service" {
     },
     {
       name  = "COGNITO_OPEN_ID_CLIENT_ID"
-      value = data.aws_secretsmanager_secret.cognito_open_id_client_id.secret_string
+      value = data.aws_secretsmanager_secret_version.cognito_open_id_client_id_version.secret_string
     },
     {
       name  = "COGNITO_OPEN_ID_CLIENT_SECRET"
-      value = data.aws_secretsmanager_secret.cognito_open_id_client_secret.secret_string
+      value = data.aws_secretsmanager_secret_version.cognito_open_id_client_secret_version.secret_string
     },
     {
       name  = "COGNITO_OPEN_ID_SECRET"
-      value = data.aws_secretsmanager_secret.cognito_open_id_secret.secret_string
+      value = data.aws_secretsmanager_secret_version.cognito_open_id_secret_version.secret_string
     },
   ]
 }
