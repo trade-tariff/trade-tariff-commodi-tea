@@ -2,12 +2,12 @@ import { type RequestHandler } from 'express'
 import { auth } from 'express-openid-connect'
 import { logger } from '../config/logging'
 
-interface ScpConfiguration {
+interface CognitoConfiguration {
   middleware: RequestHandler
   baseURL: string
 }
 
-export const configureAuth = (): ScpConfiguration => {
+export const configureAuth = (): CognitoConfiguration => {
   const customDomain = process.env.COGNITO_OPEN_ID_CUSTOM_DOMAIN ?? undefined
   const issuerBaseURL = process.env.COGNITO_OPEN_ID_ISSUER_BASE_URL ?? undefined
   const clientID = process.env.COGNITO_OPEN_ID_CLIENT_ID ?? undefined
