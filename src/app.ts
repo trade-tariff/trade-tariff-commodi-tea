@@ -9,6 +9,7 @@ import nunjucks from 'nunjucks'
 
 import indexRouter from './routes/index'
 import initEnvironment from './config/env'
+import mainNavigationOptions from './config/mainNavigation'
 import { configureAuth } from './config/cognitoAuth'
 import { httpRequestLoggingMiddleware, logger } from './config/logging'
 
@@ -52,6 +53,7 @@ if (isDev) {
 }
 
 app.disable('x-powered-by')
+app.use(mainNavigationOptions)
 
 app.set('view engine', 'njk')
 

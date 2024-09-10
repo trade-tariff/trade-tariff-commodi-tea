@@ -30,6 +30,11 @@ export const configureAuth = (): CognitoConfiguration => {
     clientSecret,
     secret,
     idpLogout: true,
+    logoutParams: {
+      client_id: clientID,
+      redirect_uri: audience,
+      response_type: 'code'
+    },
     routes: { callback },
     authorizationParams: {
       response_type: 'code',
