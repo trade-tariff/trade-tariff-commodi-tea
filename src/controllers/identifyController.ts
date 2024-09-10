@@ -2,6 +2,7 @@ import { type Request, type Response } from 'express'
 import { GoodsNomenclatureClient } from '../utils/goodsNomenclatureClient'
 import { type Description, DescriptionSampler } from '../utils/descriptionsSampler'
 import Identification from '../models/identification'
+import { type CognitoUser, UserService } from '../services/userService'
 
 export class IdentifyController {
   private readonly client: GoodsNomenclatureClient
@@ -12,6 +13,9 @@ export class IdentifyController {
   }
 
   public async show (req: Request, res: Response): Promise<void> {
+    const user: CognitoUser = UserService.call(req)
+
+    console.log('User:', user)
     if (this.sampler === null) {
       this.sampler = await DescriptionSampler.build()
     }
@@ -25,12 +29,13 @@ export class IdentifyController {
   }
 
   public async create (req: Request, res: Response): Promise<void> {
+    const user: CognitoUser = UserService.call(req)
     const session = req.session ?? {}
     const answer = req.body.correctCNCode
     const newIdentification = await Identification.create({
       classifiedDescription: session.goodsNomenclature.sampleDescription,
       classifiedDescriptionId: session.goodsNomenclature.goodsNomenclatureItemId,
-      userId: 134,
+      userId: user.userId,
       state: 'completed',
       answer: {
         answer
