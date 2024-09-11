@@ -3,6 +3,7 @@ import { GoodsNomenclatureClient } from '../utils/goodsNomenclatureClient'
 import { type Description, DescriptionSampler } from '../utils/descriptionsSampler'
 import Identification from '../models/identification'
 import { type CognitoUser, UserService } from '../services/userService'
+import { logger } from '../config/logging'
 
 export class IdentifyController {
   private readonly client: GoodsNomenclatureClient
@@ -15,7 +16,7 @@ export class IdentifyController {
   public async show (req: Request, res: Response): Promise<void> {
     const user: CognitoUser = UserService.call(req)
 
-    console.log('User:', user)
+    logger.debug('User:', user)
     if (this.sampler === null) {
       this.sampler = await DescriptionSampler.build()
     }
@@ -41,6 +42,8 @@ export class IdentifyController {
         answer
       }
     })
+
+    logger.debug('Identification:', newIdentification)
 
     if (answer === 'yes' || answer === 'maybe') {
       session.goodsNomenclature = []
