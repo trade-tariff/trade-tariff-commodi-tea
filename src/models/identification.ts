@@ -14,7 +14,7 @@ Identification.init({
   },
   classifiedDescription: DataTypes.JSONB,
   classifiedDescriptionId: DataTypes.BIGINT,
-  userId: DataTypes.BIGINT,
+  userId: DataTypes.STRING,
   state: DataTypes.ENUM('pending', 'completed'),
   answer: DataTypes.JSONB,
   createdAt: DataTypes.DATE,
