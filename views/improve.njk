@@ -1,14 +1,46 @@
 {% extends "layout.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/panel/macro.njk" import govukPanel %}
-{% block title %}ImprovePage{% endblock %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+
+{% block title %}Reason for no{% endblock %}
+
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <p class="govuk-body">
-                This feedback will be used to help improve the FPO commodity code identification tool and make it as good as it can be!
-            </p>
-            <p class="govuk-body"><a href="/" class="govuk-link">Check another commodi-tea</a></p>
+
+            <h1 class="govuk-heading-xl">Commodi-tea ☕</h1>
+
+            <form action="/improve" method="post">
+            {{ govukRadios({
+                name: "reasonForNoCode",
+                fieldset: {
+                    legend: {
+                        text: "Why was your answer \"No\"?",
+                        isPageHeading: true,
+                        classes: "govuk-fieldset__legend--l"
+                    }
+                },
+                items: [
+                    {
+                        value: "wrongCode",
+                        text: "The code is wrong",
+                        hint: {
+                            text: "There is enough information in the description but code is wrong"
+                        }
+                    },
+                    {
+                        value: "vague",
+                        text: "The description is too vague to classify"
+                    }
+                ]
+            }) }}
+
+            <div class="govuk-button-group">
+                {{ govukButton({"text": "Continue", "type": "submit", "preventDoubleClick": true}) }}
+                {# <a class="govuk-link" href="/dashboard">Cancel</a> #}
+            </div>
+            </form>
         </div>
     </div>
 {% endblock %}
