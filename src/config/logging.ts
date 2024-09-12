@@ -30,8 +30,10 @@ export function httpRequestLoggingMiddleware (): any {
   )
 }
 
+const logLevel = process.env.LOG_LEVEL ?? 'info'
+
 export const logger = winston.createLogger({
-  level: 'info',
+  level: logLevel,
   format: winston.format.simple(),
   defaultMeta: { service: 'tea' },
   transports: [
