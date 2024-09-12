@@ -1,10 +1,11 @@
 import { type RequestHandler } from 'express'
-import { auth } from 'express-openid-connect'
+import { auth, requiresAuth } from 'express-openid-connect'
 import { logger } from '../config/logging'
 
 interface CognitoConfiguration {
-  middleware: RequestHandler
   baseURL: string
+  configureAuthMiddleware: RequestHandler
+  requireAuthMiddleware: RequestHandler
 }
 
 export const configureAuth = (): CognitoConfiguration => {
@@ -41,7 +42,7 @@ export const configureAuth = (): CognitoConfiguration => {
       scope: 'openid profile',
       audience
     },
-    authRequired: true,
+    authRequired: false,
     afterCallback: async (_req: any, _res: any, session: any, _decodedState: any) => {
       try {
         const url = `${customDomain}/oauth2/userinfo`
@@ -70,7 +71,8 @@ export const configureAuth = (): CognitoConfiguration => {
   const configuredAuth = auth(configuration)
 
   return {
-    middleware: configuredAuth,
-    baseURL: audience
+    baseURL: audience,
+    configureAuthMiddleware: configuredAuth,
+    requireAuthMiddleware: requiresAuth()
   }
 }

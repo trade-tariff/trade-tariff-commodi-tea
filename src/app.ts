@@ -12,6 +12,7 @@ import initEnvironment from './config/env'
 import mainNavigationOptions from './config/mainNavigation'
 import { configureAuth } from './config/cognitoAuth'
 import { httpRequestLoggingMiddleware, logger } from './config/logging'
+import { HealthchecksController } from './controllers/healthchecksController'
 
 initEnvironment()
 
@@ -43,11 +44,11 @@ if (isDev) {
   logger.debug('Cognito Open ID Enabled:', process.env.COGNITO_OPEN_ID_ENABLED)
   if (process.env.COGNITO_OPEN_ID_ENABLED === 'true') {
     const cognitoAuth = configureAuth()
-    app.use(cognitoAuth.middleware)
+    app.use(cognitoAuth.configureAuthMiddleware)
   }
 } else {
   const cognitoAuth = configureAuth()
-  app.use(cognitoAuth.middleware)
+  app.use(cognitoAuth.configureAuthMiddleware)
   app.use(httpRequestLoggingMiddleware())
   nunjucksConfiguration.addGlobal('baseURL', cognitoAuth.baseURL)
 }
@@ -79,7 +80,11 @@ app.use(cookieSession({
 }))
 app.use(cookieParser(cookieSigningSecret))
 
-app.use('/', indexRouter)
+const healthchecksController = new HealthchecksController()
+app.get('/healthcheck', (req, res) => { healthchecksController.show(req, res) })
+app.get('/healthcheckz', (req, res) => { healthchecksController.showz(req, res) })
+
+app.use('/', indexRouter, configureAuth().requireAuthMiddleware)
 
 // catch 404 and forward to error handler
 app.use(function (_req: Request, _res: Response, next: NextFunction) {
