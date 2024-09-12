@@ -1,4 +1,5 @@
 import express, { type Request, type Response, type NextFunction } from 'express'
+import { requiresAuth } from 'express-openid-connect'
 
 import { IdentifyController } from '../controllers/identifyController'
 import { ImproveController } from '../controllers/improveController'
@@ -6,6 +7,12 @@ import { ImproveController } from '../controllers/improveController'
 const router = express.Router()
 const identifyController = new IdentifyController()
 const improveController = new ImproveController()
+
+const isProduction = (process.env.NODE_ENV ?? 'development') === 'production'
+
+if (isProduction) {
+  router.use(requiresAuth())
+}
 
 router.get('/confirmation', (req, res) => { res.render('confirmation') })
 

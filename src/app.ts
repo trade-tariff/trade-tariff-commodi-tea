@@ -1,4 +1,9 @@
-import express, { type Express, type Request, type Response, type NextFunction } from 'express'
+import express, {
+  type Express,
+  type Request,
+  type Response,
+  type NextFunction
+} from 'express'
 import cookieSession from 'cookie-session'
 import cookieParser from 'cookie-parser'
 import createError, { type HttpError } from 'http-errors'
@@ -17,18 +22,15 @@ import { HealthchecksController } from './controllers/healthchecksController'
 initEnvironment()
 
 const app: Express = express()
-
 const isDev = app.get('env') === 'development'
 const port = process.env.PORT ?? 8080
 const cookieSigningSecret = process.env.COOKIE_SIGNING_SECRET ?? ''
-
 const templateConfig: nunjucks.ConfigureOptions = {
   autoescape: true,
   watch: isDev,
   express: app,
   noCache: isDev
 }
-
 const nunjucksConfiguration = nunjucks.configure(
   [
     'node_modules/govuk-frontend/dist',
@@ -36,16 +38,11 @@ const nunjucksConfiguration = nunjucks.configure(
   ],
   templateConfig
 )
+const healthchecksController = new HealthchecksController()
 
 if (isDev) {
   app.use(morgan('dev'))
   nunjucksConfiguration.addGlobal('baseURL', `http://localhost:${port}`)
-
-  logger.debug('Cognito Open ID Enabled:', process.env.COGNITO_OPEN_ID_ENABLED)
-  if (process.env.COGNITO_OPEN_ID_ENABLED === 'true') {
-    const cognitoAuth = configureAuth()
-    app.use(cognitoAuth.configureAuthMiddleware)
-  }
 } else {
   const cognitoAuth = configureAuth()
   app.use(cognitoAuth.configureAuthMiddleware)
@@ -64,14 +61,6 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/govuk', express.static('node_modules/govuk-frontend/dist/govuk'))
 app.use('/assets', express.static('node_modules/govuk-frontend/dist/govuk/assets'))
 app.use(express.static('public'))
-
-nunjucks.configure(
-  [
-    'node_modules/govuk-frontend/dist',
-    'views'
-  ],
-  templateConfig
-)
 app.use(express.static(path.join(__dirname, '../public')))
 app.use(cookieSession({
   name: 'session',
@@ -80,11 +69,10 @@ app.use(cookieSession({
 }))
 app.use(cookieParser(cookieSigningSecret))
 
-const healthchecksController = new HealthchecksController()
 app.get('/healthcheck', (req, res) => { healthchecksController.show(req, res) })
 app.get('/healthcheckz', (req, res) => { healthchecksController.showz(req, res) })
 
-app.use('/', indexRouter, configureAuth().requireAuthMiddleware)
+app.use('/', indexRouter)
 
 // catch 404 and forward to error handler
 app.use(function (_req: Request, _res: Response, next: NextFunction) {
