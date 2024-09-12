@@ -13,7 +13,7 @@ export class IdentifyController {
     this.client = GoodsNomenclatureClient.build()
   }
 
-  public async show (req: Request, res: Response): Promise<void> {
+  public async new (req: Request, res: Response): Promise<void> {
     const user: CognitoUser = UserService.call(req)
 
     logger.debug('User:', user)
@@ -58,7 +58,7 @@ export class IdentifyController {
       res.redirect('/confirmation')
     } else {
       session.newIdentificationId = newIdentification.id
-      res.render('improve', { session })
+      res.redirect(`/identifications/${newIdentification.id}/improve`)
     }
   }
 }

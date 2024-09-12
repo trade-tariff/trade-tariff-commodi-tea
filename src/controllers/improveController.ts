@@ -1,35 +1,37 @@
 import { type Request, type Response } from 'express'
 import Identification from '../models/identification'
+import { logger } from '../config/logging'
 
 export class ImproveController {
   public show (req: Request, res: Response): void {
-    if (req.body.reasonForNoCode === 'vague') {
-      res.redirect('/confirmation')
-    } else {
-      const session = req.session ?? {}
-      res.render('classify', { session })
-    }
+    const identificationId = req.params.id
+    const updateIdentificationPath = `/identifications/${identificationId}/improve`
+
+    res.render('improve', { updateIdentificationPath })
   }
 
   public async update (req: Request, res: Response): Promise<void> {
-    const session = req.session ?? {}
-    const newIdentificationId = session.newIdentificationId
+    const identificationId = req.params.id
+    const reason = req.body.reason
 
+    logger.debug(`Updating identification ${identificationId} with reason ${reason}`)
     await Identification.update(
       {
         answer: {
           answer: 'no',
-          code: req.body.correctedClassifiedCode
-        }
+          answer_info: {
+            reason
+          }
+        },
+        state: 'completed'
       },
       {
         where: {
-          id: newIdentificationId
+          id: identificationId
         }
       }
     )
 
-    session.goodsNomenclature = []
     res.redirect('/confirmation')
   }
 }

@@ -21,8 +21,8 @@ export default router.get('/', (_req: Request, res: Response, _next: NextFunctio
 })
 
 /* eslint-disable  @typescript-eslint/no-floating-promises */
-router.get('/identify', (req, res) => { identifyController.show(req, res) })
-router.post('/save', (req, res) => { identifyController.create(req, res) })
-router.post('/improve', (req, res) => { improveController.show(req, res) })
-router.post('/classify', (req, res) => { improveController.update(req, res) })
+router.get('/identifications/new', (req, res) => { identifyController.new(req, res) })
+router.post('/identifications', (req, res) => { identifyController.create(req, res) })
+router.get('/identifications/:id/improve', (req, res) => { improveController.show(req, res) })
+router.post('/identifications/:id/improve', (req, res) => { improveController.update(req, res) })
 /* eslint-enable @typescript-eslint/no-floating-promises */
