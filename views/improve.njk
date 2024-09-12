@@ -11,9 +11,9 @@
 
             <h1 class="govuk-heading-xl">Commodi-tea ☕</h1>
 
-            <form action="/improve" method="post">
+            <form action="{{ updateIdentificationPath }}" method="post">
             {{ govukRadios({
-                name: "reasonForNoCode",
+                name: "reason",
                 fieldset: {
                     legend: {
                         text: "Why was your answer \"No\"?",
@@ -23,10 +23,10 @@
                 },
                 items: [
                     {
-                        value: "wrongCode",
+                        value: "wrong",
                         text: "The code is wrong",
                         hint: {
-                            text: "There is enough information in the description but code is wrong"
+                            text: "There is enough information in the description but the code is wrong"
                         }
                     },
                     {
@@ -38,7 +38,6 @@
 
             <div class="govuk-button-group">
                 {{ govukButton({"text": "Continue", "type": "submit", "preventDoubleClick": true}) }}
-                {# <a class="govuk-link" href="/dashboard">Cancel</a> #}
             </div>
             </form>
         </div>
