@@ -22,14 +22,14 @@ import { HealthchecksController } from './controllers/healthchecksController'
 initEnvironment()
 
 const app: Express = express()
-const isDev = app.get('env') === 'development'
+const isProduction = (app.get('env') ?? 'development') === 'production'
 const port = process.env.PORT ?? 8080
 const cookieSigningSecret = process.env.COOKIE_SIGNING_SECRET ?? ''
 const templateConfig: nunjucks.ConfigureOptions = {
   autoescape: true,
-  watch: isDev,
+  watch: !isProduction,
   express: app,
-  noCache: isDev
+  noCache: !isProduction
 }
 const nunjucksConfiguration = nunjucks.configure(
   [
@@ -40,14 +40,14 @@ const nunjucksConfiguration = nunjucks.configure(
 )
 const healthchecksController = new HealthchecksController()
 
-if (isDev) {
-  app.use(morgan('dev'))
-  nunjucksConfiguration.addGlobal('baseURL', `http://localhost:${port}`)
-} else {
+if (isProduction) {
   const cognitoAuth = configureAuth()
   app.use(cognitoAuth.configureAuthMiddleware)
   app.use(httpRequestLoggingMiddleware())
   nunjucksConfiguration.addGlobal('baseURL', cognitoAuth.baseURL)
+} else {
+  app.use(morgan('dev'))
+  nunjucksConfiguration.addGlobal('baseURL', `http://localhost:${port}`)
 }
 
 app.disable('x-powered-by')
@@ -82,7 +82,7 @@ app.use(function (_req: Request, _res: Response, next: NextFunction) {
 // Error handler
 app.use(function (err: HttpError, _req: Request, res: Response, _next: NextFunction) {
   res.locals.message = err.message
-  res.locals.error = isDev ? err : {}
+  res.locals.error = !isProduction ? err : {}
 
   const statusCode: number = err.statusCode
   res.status(statusCode)

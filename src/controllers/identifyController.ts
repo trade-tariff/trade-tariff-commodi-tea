@@ -33,11 +33,19 @@ export class IdentifyController {
     const user: CognitoUser = UserService.call(req)
     const session = req.session ?? {}
     const answer = req.body.answer
+    let state: 'completed' | 'pending'
+
+    if (answer === 'yes' || answer === 'maybe') {
+      state = 'completed'
+    } else {
+      state = 'pending'
+    }
+
     const newIdentification = await Identification.create({
       classifiedDescription: session.goodsNomenclature.sampleDescription,
-      classifiedDescriptionId: 12345, // TODO: This will get populated when we have a sequential id for the ETL'd descriptions table
+      classifiedDescriptionId: 12345,
       userId: user.userId,
-      state: 'completed',
+      state,
       answer: {
         answer
       }
