@@ -1,0 +1,39 @@
+{% extends "layout.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+
+{% block title %}Suggest a code{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+
+            <h1 class="govuk-heading-xl">Commodi-tea ☕</h1>
+
+            <h1 class="govuk-heading-l">"{{ session.goodsNomenclature.sampleDescription.request_description }}"</h1>
+
+            <form action="{{ updateIdentificationPath }}" method="post">
+                {{ govukInput({
+                    label: {
+                        text: "What is the correct 8 digit CN code for the description",
+                        classes: "govuk-label--l",
+                        isPageHeading: true
+                    },
+                    classes: "govuk-input--width-8",
+                    id: "code",
+                    name: "code",
+                    inputmode: "numeric",
+                    spellcheck: false
+                }) }}
+                <input type="hidden" name="reason" value="wrong">
+
+                <div class="govuk-button-group">
+                    {{ govukButton({"text": "Continue", "type": "submit", "preventDoubleClick": true}) }}
+                    {# <a class="govuk-link" href="/dashboard">Cancel</a> #}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

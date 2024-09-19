@@ -43,8 +43,12 @@ export class GoodsNomenclatureClient {
         try {
           response = await this.client.get(`${GoodsNomenclatureClient.SEARCH_PATH}${normalisedCode}`)
         } catch (error: any) {
-          if (error.response.status !== 200) {
-            throw new Error('Not found')
+          if (error.response !== undefined) {
+            if (error.response.status !== 200) {
+              throw new Error('Not found')
+            }
+          } else {
+            throw error
           }
 
           response = error.response
