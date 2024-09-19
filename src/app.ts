@@ -13,6 +13,7 @@ import morgan from 'morgan'
 import nunjucks from 'nunjucks'
 
 import indexRouter from './routes/index'
+import apiRouter from './routes/api'
 import initEnvironment from './config/env'
 import mainNavigationOptions from './config/mainNavigation'
 import { configureAuth } from './config/cognitoAuth'
@@ -73,6 +74,7 @@ app.get('/healthcheck', (req, res) => { healthchecksController.show(req, res) })
 app.get('/healthcheckz', (req, res) => { healthchecksController.showz(req, res) })
 
 app.use('/', indexRouter)
+app.use('/api', apiRouter)
 
 // catch 404 and forward to error handler
 app.use(function (_req: Request, _res: Response, next: NextFunction) {

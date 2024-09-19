@@ -16,7 +16,7 @@ if (isProduction) {
 
 router.get('/confirmation', (req, res) => { res.render('confirmation') })
 
-export default router.get('/', (_req: Request, res: Response, _next: NextFunction) => {
+router.get('/', (_req: Request, res: Response, _next: NextFunction) => {
   res.render('index')
 })
 
@@ -28,3 +28,5 @@ router.post('/identifications/:id/improve', (req, res) => { improveController.up
 router.get('/identifications/:id/improve/wrong', (req, res) => { improveController.showWrong(req, res) })
 router.post('/identifications/:id/improve/wrong', (req, res) => { improveController.updateWrong(req, res) })
 /* eslint-enable @typescript-eslint/no-floating-promises */
+
+export default router
