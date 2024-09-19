@@ -42,10 +42,20 @@ export class ImproveController {
   }
 
   private async handleWrongUpdate (req: Request, res: Response): Promise<void> {
-    const identificationId = req.params.id
+    const id = req.params.id
     const filter = this.filterFrom(req)
     const code = req.body.code
+    const errors = this.validateCode(req)
+    const session = req.session ?? {}
 
+    if (errors.length > 0) {
+      res.status(400).render('improve/code', { session, errors, updateIdentificationPath: `/identifications/${id}/improve` })
+      return
+    }
+
+    logger.info(`Updating identification ${id} with reason wrong`)
+    logger.info(`Code: ${code}`)
+    logger.info(`Errors: ${JSON.stringify(errors)}`)
     let update: Partial<Attributes<Identification>>
 
     if (code === undefined) {
@@ -57,15 +67,15 @@ export class ImproveController {
     try {
       await Identification.update(update, filter)
     } catch (error) {
-      logger.error(`Failed to update identification ${identificationId} with reason wrong`)
+      logger.error(`Failed to update identification ${id} with reason wrong`)
       logger.error(error)
       res.status(500).render('500')
     }
 
     if (code === undefined) {
-      res.render('improve/code', { updateIdentificationPath: `/identifications/${identificationId}/improve` })
+      res.render('improve/code', { session, updateIdentificationPath: `/identifications/${id}/improve` })
     } else {
-      res.redirect('confirmation')
+      res.redirect('/confirmation')
     }
   }
 
@@ -74,5 +84,17 @@ export class ImproveController {
     const id = req.params.id
 
     return { where: { id, userId: user.userId } }
+  }
+
+  private validateCode (req: Request): Array<{ text: string, href: string }> {
+    const codeRegex = /^(\d{4}|\d{6}|\d{8}|\d{10})$/
+    const errors: Array<{ text: string, href: string }> = []
+    const code: string = req.body.code ?? ''
+
+    if (code !== '') {
+      if (!codeRegex.test(code)) { errors.push({ text: 'Code must be 4, 6, 8 or 10 digits', href: '#code' }) }
+    }
+
+    return errors
   }
 }
