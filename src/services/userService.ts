@@ -8,7 +8,7 @@ export interface CognitoUser {
 export namespace UserService {
   export function call (req: any): CognitoUser {
     const env = process.env.NODE_ENV ?? 'development'
-    const userProfile = req.appSession?.userProfile ?? null
+    const userProfile = req.appSession?.userProfile ?? {}
 
     if (userProfile === null) {
       if (env === 'production') throw new Error('User not authenticated')

@@ -1,6 +1,7 @@
 import { type RequestHandler } from 'express'
 import { auth, requiresAuth } from 'express-openid-connect'
 import { logger } from '../config/logging'
+import User from '../models/User'
 
 interface CognitoConfiguration {
   baseURL: string
@@ -59,6 +60,16 @@ export const configureAuth = (): CognitoConfiguration => {
         }
 
         const userProfile = await userProfileResponse.json()
+        const emailParts = userProfile.email.split('@')
+        const fullName = emailParts.length === 2 ? emailParts[0].replaceAll('.', ' ') : ''
+        await User.findOrCreate({
+          where: { userId: userProfile.userId },
+          defaults: {
+            userId: userProfile.username,
+            email: userProfile.email,
+            fullName
+          }
+        })
 
         return { ...session, userProfile }
       } catch (error) {

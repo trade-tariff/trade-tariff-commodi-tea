@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import connection from '../config/connection'
+import User from './User'
 
 class Identification extends Model {
   id?: number
@@ -42,6 +43,12 @@ Identification.init({
 }, {
   sequelize: connection,
   modelName: 'Identification'
+})
+
+Identification.belongsTo(User, {
+  foreignKey: {
+    name: 'userId'
+  }
 })
 
 export default Identification

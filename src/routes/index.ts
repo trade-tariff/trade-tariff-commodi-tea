@@ -3,10 +3,12 @@ import { requiresAuth } from 'express-openid-connect'
 
 import { IdentifyController } from '../controllers/identifyController'
 import { ImproveController } from '../controllers/improveController'
+import { LeaderboardController } from '../controllers/leaderBoardController'
 
 const router = express.Router()
 const identifyController = new IdentifyController()
 const improveController = new ImproveController()
+const leaderBoardController = new LeaderboardController()
 
 const isProduction = (process.env.NODE_ENV ?? 'development') === 'production'
 
@@ -27,6 +29,7 @@ router.get('/identifications/:id/improve', (req, res) => { improveController.sho
 router.post('/identifications/:id/improve', (req, res) => { improveController.update(req, res) })
 router.get('/identifications/:id/improve/wrong', (req, res) => { improveController.showWrong(req, res) })
 router.post('/identifications/:id/improve/wrong', (req, res) => { improveController.updateWrong(req, res) })
+router.get('/leaderboard', (req, res) => { leaderBoardController.show(req, res) })
 /* eslint-enable @typescript-eslint/no-floating-promises */
 
 export default router

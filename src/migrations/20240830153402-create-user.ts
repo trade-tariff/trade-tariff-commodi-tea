@@ -3,26 +3,18 @@ import { type QueryInterface, type DataTypes } from 'sequelize'
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
-    await queryInterface.createTable('Identifications', {
-      id: {
-        type: Sequelize.BIGINT,
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true
-      },
-      classifiedDescription: {
-        type: Sequelize.JSONB
-      },
-      classifiedDescriptionId: {
-        type: Sequelize.BIGINT
-      },
+    await queryInterface.createTable('Users', {
       userId: {
-        type: Sequelize.BIGINT
+        allowNull: false,
+        primaryKey: true,
+        type: Sequelize.STRING
       },
-      state: {
-        type: Sequelize.ENUM('pending', 'completed')
+      email: {
+        allowNull: false,
+        type: Sequelize.STRING
       },
-      answer: {
+      fullName: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       createdAt: {
@@ -32,10 +24,11 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+
       }
     })
   },
   async down (queryInterface: QueryInterface, _Sequelize: any) {
-    await queryInterface.dropTable('Identifications')
+    await queryInterface.dropTable('Users')
   }
 }

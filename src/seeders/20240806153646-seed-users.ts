@@ -2,20 +2,18 @@ import { type QueryInterface, type Sequelize } from 'sequelize'
 
 export default {
   up: async (queryInterface: QueryInterface, _sequelize: Sequelize) => {
-    return await queryInterface.bulkInsert('users', [
+    return await queryInterface.bulkInsert('Users', [
       {
-        firstName: 'John',
-        lastName: 'Doe',
+        userId: 'local-development',
+        fullName: 'John Doe',
         email: 'john.doe@example.com',
-        password: 'password123',
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        firstName: 'Jane',
-        lastName: 'Smith',
+        userId: '134',
+        fullName: 'Jane Smith',
         email: 'jane.smith@example.com',
-        password: 'password456',
         createdAt: new Date(),
         updatedAt: new Date()
       }
