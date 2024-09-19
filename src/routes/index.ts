@@ -25,4 +25,6 @@ router.get('/identifications/new', (req, res) => { identifyController.new(req, r
 router.post('/identifications', (req, res) => { identifyController.create(req, res) })
 router.get('/identifications/:id/improve', (req, res) => { improveController.show(req, res) })
 router.post('/identifications/:id/improve', (req, res) => { improveController.update(req, res) })
+router.get('/identifications/:id/improve/wrong', (req, res) => { improveController.showWrong(req, res) })
+router.post('/identifications/:id/improve/wrong', (req, res) => { improveController.updateWrong(req, res) })
 /* eslint-enable @typescript-eslint/no-floating-promises */

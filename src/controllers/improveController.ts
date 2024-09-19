@@ -7,18 +7,65 @@ import { type CognitoUser, UserService } from '../services/userService'
 export class ImproveController {
   public show (req: Request, res: Response): void {
     const identificationId = req.params.id
-    const updateIdentificationPath = `/identifications/${identificationId}/improve`
+    const path = `/identifications/${identificationId}/improve`
 
-    res.status(200).render('improve/reason', { updateIdentificationPath })
+    res.status(200).render('improve/reason', { path })
   }
 
   public async update (req: Request, res: Response): Promise<void> {
     const reason: string = req.body.reason ?? 'unknown'
+    const id = req.params.id
 
+    logger.info(`Updating identification ${id} with reason ${reason}`)
     if (reason === 'vague') {
       await this.handleVagueUpdate(req, res)
     } else if (reason === 'wrong') {
-      await this.handleWrongUpdate(req, res)
+      const path = `/identifications/${id}/improve/wrong`
+
+      res.redirect(path)
+    } else {
+      res.status(500).render('500')
+    }
+  }
+
+  public showWrong (req: Request, res: Response): void {
+    const identificationId = req.params.id
+    const path = `/identifications/${identificationId}/improve/wrong`
+
+    res.status(200).render('improve/code', { path })
+  }
+
+  public async updateWrong (req: Request, res: Response): Promise<void> {
+    const id = req.params.id
+    const filter = this.filterFrom(req)
+    const code = req.body.code
+    const errors = this.validateCode(req)
+    const session = req.session ?? {} // suspect
+
+    if (errors.length > 0) {
+      const path = `/identifications/${id}/improve/wrong`
+
+      logger.info(`Failed to update identification ${id} with reason wrong`)
+      logger.info(`errors: ${JSON.stringify(errors)}`)
+      logger.info(`session: ${JSON.stringify(session)}`)
+
+      res.status(400).render('improve/code', { session, errors, path })
+
+      return
+    }
+
+    const update: Partial<Attributes<Identification>> = {
+      answer: { answer: 'no', answer_info: { reason: 'wrong', code } },
+      state: 'completed'
+    }
+
+    try {
+      await Identification.update(update, filter)
+      res.redirect('/confirmation')
+    } catch (error) {
+      logger.error(`Failed to update identification ${id} with reason wrong`)
+      logger.error(error)
+      res.status(500).render('500')
     }
   }
 
@@ -41,44 +88,6 @@ export class ImproveController {
     res.redirect('/confirmation')
   }
 
-  private async handleWrongUpdate (req: Request, res: Response): Promise<void> {
-    const id = req.params.id
-    const filter = this.filterFrom(req)
-    const code = req.body.code
-    const errors = this.validateCode(req)
-    const session = req.session ?? {}
-
-    if (errors.length > 0) {
-      res.status(400).render('improve/code', { session, errors, updateIdentificationPath: `/identifications/${id}/improve` })
-      return
-    }
-
-    logger.info(`Updating identification ${id} with reason wrong`)
-    logger.info(`Code: ${code}`)
-    logger.info(`Errors: ${JSON.stringify(errors)}`)
-    let update: Partial<Attributes<Identification>>
-
-    if (code === undefined) {
-      update = { answer: { answer: 'no', answer_info: { reason: 'wrong' } }, state: 'pending' }
-    } else {
-      update = { answer: { answer: 'no', answer_info: { reason: 'wrong', code } }, state: 'completed' }
-    }
-
-    try {
-      await Identification.update(update, filter)
-    } catch (error) {
-      logger.error(`Failed to update identification ${id} with reason wrong`)
-      logger.error(error)
-      res.status(500).render('500')
-    }
-
-    if (code === undefined) {
-      res.render('improve/code', { session, updateIdentificationPath: `/identifications/${id}/improve` })
-    } else {
-      res.redirect('/confirmation')
-    }
-  }
-
   private filterFrom (req: Request): UpdateOptions<Attributes<Identification>> {
     const user: CognitoUser = UserService.call(req)
     const id = req.params.id
@@ -91,8 +100,22 @@ export class ImproveController {
     const errors: Array<{ text: string, href: string }> = []
     const code: string = req.body.code ?? ''
 
-    if (code !== '') {
-      if (!codeRegex.test(code)) { errors.push({ text: 'Code must be 4, 6, 8 or 10 digits', href: '#code' }) }
+    if (code === '') {
+      errors.push(
+        {
+          text: 'Enter a code',
+          href: '#code'
+        }
+      )
+    } else {
+      if (!codeRegex.test(code)) {
+        errors.push(
+          {
+            text: 'Code must be 4, 6, 8 or 10 digits',
+            href: '#code'
+          }
+        )
+      }
     }
 
     return errors

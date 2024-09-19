@@ -8,6 +8,11 @@
 {% block title %}Suggest a code{% endblock %}
 
 {% block content %}
+    {% set goodsNomenclatureDescription = session.goodsNomenclature.sampleDescription.request_description %}
+    {% set formLabelText = ["What is the correct ", session.goodsNomenclature.sampleDescription.request_digits, " CN code for the description"] | join %}
+    <script> console.log("{{ goodsNomenclatureDescription }}")</script>
+    <script> console.log("{{ formLabelText }}")</script>
+    <script> console.log("{{ path }}")</script>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             {% if errors %}
@@ -17,11 +22,9 @@
                 }) }}
             {% endif %}
             <h1 class="govuk-heading-xl">Commodi-tea ☕</h1>
-
             <h1 class="govuk-heading-l">"{{ session.goodsNomenclature.sampleDescription.request_description }}"</h1>
-            {% set labelText = ["What is the correct ", session.goodsNomenclature.sampleDescription.request_digits, " CN code for the description"] | join %}
 
-            <form action="{{ updateIdentificationPath }}" method="post">
+            <form action="{{ path }}" method="post">
                 {{ govukInput({
                     label: {
                         text: "What is the correct 8 digit CN code for the description",
@@ -35,6 +38,7 @@
                     spellcheck: false
                 }) }}
                 <input type="hidden" name="reason" value="wrong">
+                <input type="hidden" name="needscode" value="true">
 
                 <div class="govuk-button-group">
                     {{ govukButton({"text": "Continue", "type": "submit", "preventDoubleClick": true}) }}
