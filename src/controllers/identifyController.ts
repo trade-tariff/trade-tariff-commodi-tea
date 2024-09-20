@@ -24,7 +24,7 @@ export class IdentifyController {
     const description: Description = this.sampler.sample()
     const goodsNomenclature = await this.client.get(description)
     const session = req.session ?? {}
-    session.sampleDescription = goodsNomenclature.sampleDescription
+    session.goodsNomenclature = goodsNomenclature
 
     res.render('identify', { goodsNomenclature })
   }
@@ -33,7 +33,16 @@ export class IdentifyController {
     const user: CognitoUser = UserService.call(req)
     const session = req.session ?? {}
     const answer = req.body.answer
+    const errors = this.validateAnswer(req)
     let state: 'completed' | 'pending'
+
+    if (errors.length > 0) {
+      const goodsNomenclature = session.goodsNomenclature
+
+      res.status(400).render('identify', { goodsNomenclature, errors })
+
+      return
+    }
 
     if (answer === 'yes' || answer === 'maybe') {
       state = 'completed'
@@ -42,7 +51,7 @@ export class IdentifyController {
     }
 
     const newIdentification = await Identification.create({
-      classifiedDescription: session.sampleDescription,
+      classifiedDescription: session.goodsNomenclature.sampleDescription,
       classifiedDescriptionId: 12345,
       userId: user.userId,
       state,
@@ -54,10 +63,25 @@ export class IdentifyController {
     logger.debug('Identification:', newIdentification)
 
     if (answer === 'yes' || answer === 'maybe') {
-      session.sampleDescription = null
       res.redirect('/confirmation')
     } else {
       res.redirect(`/identifications/${newIdentification.id}/improve`)
     }
+  }
+
+  private validateAnswer (req: Request): Array<{ text: string, href: string }> {
+    const errors: Array<{ text: string, href: string }> = []
+    const answer = req.body.answer
+
+    if (answer !== 'yes' && answer !== 'no' && answer !== 'maybe') {
+      errors.push(
+        {
+          text: 'Pick an option',
+          href: '#answer'
+        }
+      )
+    }
+
+    return errors
   }
 }

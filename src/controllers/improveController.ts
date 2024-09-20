@@ -15,14 +15,20 @@ export class ImproveController {
   public async update (req: Request, res: Response): Promise<void> {
     const reason: string = req.body.reason ?? 'unknown'
     const id = req.params.id
+    const errors = this.validateReason(req)
 
-    logger.info(`Updating identification ${id} with reason ${reason}`)
+    if (errors.length > 0) {
+      const path = `/identifications/${id}/improve`
+
+      res.status(400).render('improve/reason', { errors, path })
+
+      return
+    }
+
     if (reason === 'vague') {
       await this.handleVagueUpdate(req, res)
     } else if (reason === 'wrong') {
-      const path = `/identifications/${id}/improve/wrong`
-
-      res.redirect(path)
+      res.redirect(`/identifications/${id}/improve/wrong`)
     } else {
       res.status(500).render('500')
     }
@@ -100,7 +106,7 @@ export class ImproveController {
     if (code === '') {
       errors.push(
         {
-          text: 'Enter a code',
+          text: 'Enter a valid code',
           href: '#code'
         }
       )
@@ -113,6 +119,22 @@ export class ImproveController {
           }
         )
       }
+    }
+
+    return errors
+  }
+
+  private validateReason (req: Request): Array<{ text: string, href: string }> {
+    const errors: Array<{ text: string, href: string }> = []
+    const reason: string = req.body.reason ?? ''
+
+    if (reason === '') {
+      errors.push(
+        {
+          text: 'Pick an option',
+          href: '#reason'
+        }
+      )
     }
 
     return errors
