@@ -31,8 +31,9 @@ export class ImproveController {
   public showWrong (req: Request, res: Response): void {
     const identificationId = req.params.id
     const path = `/identifications/${identificationId}/improve/wrong`
+    const session = req.session ?? {}
 
-    res.status(200).render('improve/code', { path })
+    res.status(200).render('improve/code', { session, path })
   }
 
   public async updateWrong (req: Request, res: Response): Promise<void> {
@@ -44,10 +45,6 @@ export class ImproveController {
 
     if (errors.length > 0) {
       const path = `/identifications/${id}/improve/wrong`
-
-      logger.info(`Failed to update identification ${id} with reason wrong`)
-      logger.info(`errors: ${JSON.stringify(errors)}`)
-      logger.info(`session: ${JSON.stringify(session)}`)
 
       res.status(400).render('improve/code', { session, errors, path })
 

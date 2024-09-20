@@ -24,7 +24,7 @@ export class IdentifyController {
     const description: Description = this.sampler.sample()
     const goodsNomenclature = await this.client.get(description)
     const session = req.session ?? {}
-    session.goodsNomenclature = goodsNomenclature
+    session.sampleDescription = goodsNomenclature.sampleDescription
 
     res.render('identify', { goodsNomenclature })
   }
@@ -42,7 +42,7 @@ export class IdentifyController {
     }
 
     const newIdentification = await Identification.create({
-      classifiedDescription: session.goodsNomenclature.sampleDescription,
+      classifiedDescription: session.sampleDescription,
       classifiedDescriptionId: 12345,
       userId: user.userId,
       state,
@@ -54,10 +54,9 @@ export class IdentifyController {
     logger.debug('Identification:', newIdentification)
 
     if (answer === 'yes' || answer === 'maybe') {
-      session.goodsNomenclature = []
+      session.sampleDescription = null
       res.redirect('/confirmation')
     } else {
-      session.newIdentificationId = newIdentification.id
       res.redirect(`/identifications/${newIdentification.id}/improve`)
     }
   }
