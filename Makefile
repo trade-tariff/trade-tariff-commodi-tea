@@ -43,16 +43,31 @@ create-development:
 create-test:
 	NODE_ENV=test npx sequelize-cli db:create
 
+drop-development:
+	NODE_ENV=development npx sequelize-cli db:drop
+
+drop-test:
+	NODE_ENV=test npx sequelize-cli db:drop
+
 migrate-development:
 	NODE_ENV=development npx sequelize-cli db:migrate
 
 migrate-test:
 	NODE_ENV=test npx sequelize-cli db:migrate
 
-migrate: migrate-development migrate-test
+rollback-development:
+	NODE_ENV=development npx sequelize-cli db:migrate:undo
 
-migrate-production:
-	NODE_ENV=production npx sequelize-cli db:migrate
+rollback-test:
+	NODE_ENV=test npx sequelize-cli db:migrate:undo
 
 seed:
 	NODE_ENV=development npx sequelize-cli db:seed:all
+
+create: create-development create-test
+
+drop: drop-development drop-test
+
+migrate: migrate-development migrate-test
+
+rollback: rollback-development rollback-test
