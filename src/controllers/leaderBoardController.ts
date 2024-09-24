@@ -17,8 +17,19 @@ export class LeaderboardController {
         attributes: [],
         required: true
       }],
-      attributes: [[Sequelize.col('User.fullName'), 'fullName'], [Sequelize.col('Identification.userId'), 'userId'], 'state', 'answer', [Sequelize.fn('COUNT', Sequelize.col('id')), 'score']],
-      group: [Sequelize.col('User.fullName'), Sequelize.col('Identification.userId'), 'state', 'answer'],
+      attributes: [
+        [Sequelize.col('User.fullName'), 'fullName'],
+        [Sequelize.col('Identification.userId'), 'userId'],
+        'state',
+        'answer',
+        [Sequelize.fn('COUNT', Sequelize.col('id')), 'score']
+      ],
+      group: [
+        Sequelize.col('User.fullName'),
+        Sequelize.col('Identification.userId'),
+        'state',
+        'answer'
+      ],
       order: [
         ['score', 'DESC']
       ],

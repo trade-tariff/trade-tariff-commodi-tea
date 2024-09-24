@@ -5,12 +5,13 @@ export function computeScore (identifications: Identification[]): any[] {
   console.log(identifications)
   const scoreMap = new Map<string, number>()
   identifications.forEach(d => {
-    const answer = JSON.parse(d?.answer ?? '').answer
+    const answer = d?.answer as any
+    const actualAnswer = answer?.answer
     let score = 0
     const fullName = d?.fullName ?? ''
-    if (d?.state === 'completed' && answer === 'no') {
+    if (d?.state === 'completed' && actualAnswer === 'no') {
       score = 2 * (d?.score ?? 1)
-    } else if ((d?.state === 'completed' && (answer === 'yes' || answer === 'maybe')) || (d?.state === 'pending' && answer === 'no')) {
+    } else if ((d?.state === 'completed' && (actualAnswer === 'yes' || actualAnswer === 'maybe')) || (d?.state === 'pending' && actualAnswer === 'no')) {
       score = 1 * (d?.score ?? 1)
     }
 

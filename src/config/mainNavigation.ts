@@ -13,10 +13,18 @@ export default function (req: any, res: Response, next: NextFunction): void {
       href: '/leaderboard',
       text: 'Leaderboard'
     })
-
     mainNavigation.push({
       href: '/logout',
       text: 'Sign Out'
+    })
+  } else {
+    mainNavigation.push({
+      href: '/',
+      text: 'Home'
+    })
+    mainNavigation.push({
+      href: '/leaderboard',
+      text: 'Leaderboard'
     })
   }
 
