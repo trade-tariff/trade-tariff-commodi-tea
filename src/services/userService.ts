@@ -53,6 +53,7 @@ export namespace UserService {
   }
 
   async function handleDbUser (userProfile: CognitoUser): Promise<void> {
+    console.log('Calling handleDbUser')
     try {
       const result = await User.findOrCreate({
         where: { userId: userProfile.userId },
