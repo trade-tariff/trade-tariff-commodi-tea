@@ -9,7 +9,8 @@ export namespace UserService {
   export function call (req: any): CognitoUser {
     const env = process.env.NODE_ENV ?? 'development'
     const userProfile = req.appSession?.userProfile ?? null
-    console.log(userProfile)
+    console.log('req.appSession =>' + req.appSession)
+    console.log('userProfile =>' + userProfile)
     if (userProfile === null) {
       if (env === 'production') throw new Error('User Profile is null, are you signed in?')
 
