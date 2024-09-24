@@ -58,19 +58,24 @@ export const configureAuth = (): CognitoConfiguration => {
         if (!userProfileResponse.ok) {
           throw new Error('Failed to fetch user profile')
         }
-
         const userProfile = await userProfileResponse.json()
-        const emailParts = userProfile.email.split('@')
-        const fullName = emailParts.length === 2 ? emailParts[0].replaceAll('.', ' ') : ''
-        await User.findOrCreate({
-          where: { userId: userProfile.userId },
-          defaults: {
-            userId: userProfile.username,
-            email: userProfile.email,
-            fullName
-          }
-        })
 
+        try {
+          const emailParts = userProfile.email.split('@')
+          const fullName = emailParts.length === 2 ? emailParts[0].replaceAll('.', ' ') : ''
+          const result = await User.findOrCreate({
+            where: { userId: userProfile.userId },
+            defaults: {
+              userId: userProfile.username,
+              email: userProfile.email,
+              fullName
+            }
+          })
+          console.log('Result: ', result)
+        } catch (error) {
+          logger.error('Error in saving the user details', error)
+          return session
+        }
         return { ...session, userProfile }
       } catch (error) {
         logger.error('Error fetching user profile:', error)
