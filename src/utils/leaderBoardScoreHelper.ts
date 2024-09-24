@@ -1,8 +1,9 @@
 import type Identification from '../models/identification'
+import { logger } from '../config/logging'
 
 export function computeScore (identifications: Identification[]): any[] {
-  console.log('start => computeScore')
-  console.log(identifications)
+  logger.debug('start => computeScore')
+  logger.debug(identifications)
   const scoreMap = new Map<string, number>()
   identifications.forEach(d => {
     const answer = d?.answer as any
@@ -23,12 +24,12 @@ export function computeScore (identifications: Identification[]): any[] {
     }
   })
   const sortedScoreMap = new Map([...scoreMap.entries()].sort((a, b) => b[1] - a[1]))
-  console.log('sorted scores')
-  console.log(sortedScoreMap)
+  logger.debug('sorted scores')
+  logger.debug(sortedScoreMap)
   const leaders: any[] = []
   sortedScoreMap.forEach((value, key) =>
     leaders.push({ fullName: key, score: value }))
-  console.log('leaders')
-  console.log(leaders)
+  logger.debug('leaders')
+  logger.debug(leaders)
   return leaders
 }

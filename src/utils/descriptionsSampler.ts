@@ -2,6 +2,8 @@ import * as fs from 'fs'
 import * as path from 'path'
 import YAML from 'yaml'
 
+import { logger } from '../config/logging'
+
 interface SamplingConfig {
   name: string
   percentage: number
@@ -70,7 +72,7 @@ export class DescriptionSampler {
 
       return YAML.parse(data)
     } catch (err) {
-      console.error('Failed to load configuration:', err)
+      logger.error('Failed to load configuration:', err)
       throw err
     }
   }
@@ -81,7 +83,7 @@ export class DescriptionSampler {
       const data = await fs.promises.readFile(DescriptionSampler.DESCRIPTIONS_FILE, 'utf8')
       return JSON.parse(data) as Description[]
     } catch (err) {
-      console.error('Failed to load descriptions:', err)
+      logger.error('Failed to load descriptions:', err)
       throw err
     }
   }

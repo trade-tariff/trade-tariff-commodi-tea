@@ -16,14 +16,9 @@ export namespace UserService {
     const env = process.env.NODE_ENV ?? 'development'
     const userProfile = req.appSession?.userProfile ?? null
 
-    console.debug('req.appSession =>' + JSON.stringify(req.appSession))
-    console.debug('req.appSession =>' + req.appSession)
-    console.dir('req.appSession =>' + req.appSession)
-    console.dir('req.appSession =>' + JSON.stringify(req.appSession))
-    console.info('req.appSession =>' + JSON.stringify(req.appSession))
-    console.info('req.appSession =>' + req.appSession)
-
+    logger.debug('req.appSession =>' + req.appSession)
     logger.debug('userProfile =>' + userProfile)
+
     if (userProfile === null) {
       if (env === 'production') throw new Error('User Profile is null, are you signed in?')
 

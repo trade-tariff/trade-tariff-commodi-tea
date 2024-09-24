@@ -6,11 +6,7 @@ import { computeScore } from '../utils/leaderBoardScoreHelper'
 import { LeaderboardPresenter } from '../presenters/leaderBoardPresenter'
 
 export class LeaderboardController {
-  public async show (req: Request, res: Response): Promise<void> {
-    console.log('Users')
-    console.log(await User.findAll())
-    console.log('Identifications')
-    console.log(await Identification.findAll())
+  public async show (_req: Request, res: Response): Promise<void> {
     const result = await Identification.findAll({
       include: [{
         model: User,

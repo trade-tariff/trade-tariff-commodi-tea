@@ -58,7 +58,7 @@ export const configureAuth = (): CognitoConfiguration => {
           throw new Error('Failed to fetch user profile')
         }
         const userProfile = await userProfileResponse.json()
-        console.debug(userProfile)
+        logger.debug(userProfile)
         return { ...session, userProfile }
       } catch (error) {
         logger.error('Error fetching user profile:', error)
