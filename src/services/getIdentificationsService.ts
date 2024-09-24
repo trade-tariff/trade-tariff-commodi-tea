@@ -11,8 +11,6 @@ interface IdentificationFilter {
 }
 
 export class GetIdentificationsService {
-  MAXIMUM_DAYS_AGO = 90
-
   async call (req: Request): Promise<Identification[]> {
     try {
       return await Identification.findAll({
@@ -62,7 +60,7 @@ export class GetIdentificationsService {
   }
 
   private buildCreatedAtQuery (daysAgo: number): any {
-    if (daysAgo === 0 || daysAgo < 0 || daysAgo > this.MAXIMUM_DAYS_AGO) {
+    if (daysAgo === 0 || daysAgo < 0) {
       return {}
     }
 
@@ -72,7 +70,7 @@ export class GetIdentificationsService {
   }
 
   private buildUpdatedAtQuery (daysAgo: number): any {
-    if (daysAgo === 0 || daysAgo < 0 || daysAgo > this.MAXIMUM_DAYS_AGO) {
+    if (daysAgo === 0 || daysAgo < 0) {
       return {}
     }
 
