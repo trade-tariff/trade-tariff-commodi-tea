@@ -14,7 +14,7 @@ export class IdentifyController {
   }
 
   public async new (req: Request, res: Response): Promise<void> {
-    const user: CognitoUser = UserService.call(req)
+    const user: CognitoUser = await UserService.call(req)
 
     logger.debug('User:', user)
     if (this.sampler === null) {
@@ -30,7 +30,7 @@ export class IdentifyController {
   }
 
   public async create (req: Request, res: Response): Promise<void> {
-    const user: CognitoUser = UserService.call(req)
+    const user: CognitoUser = await UserService.call(req)
     const session = req.session ?? {}
     const answer = req.body.answer
     const errors = this.validateAnswer(req)

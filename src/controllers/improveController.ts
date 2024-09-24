@@ -44,7 +44,7 @@ export class ImproveController {
 
   public async updateWrong (req: Request, res: Response): Promise<void> {
     const id = req.params.id
-    const filter = this.filterFrom(req)
+    const filter = await this.filterFrom(req)
     const code = req.body.code
     const errors = this.validateCode(req)
     const session = req.session ?? {} // suspect
@@ -80,7 +80,7 @@ export class ImproveController {
     }
 
     try {
-      await Identification.update(update, this.filterFrom(req))
+      await Identification.update(update, await this.filterFrom(req))
     } catch (error) {
       logger.error(`Failed to update identification ${identificationId} with reason vague`)
       logger.error(error)
@@ -91,8 +91,8 @@ export class ImproveController {
     res.redirect('/confirmation')
   }
 
-  private filterFrom (req: Request): UpdateOptions<Attributes<Identification>> {
-    const user: CognitoUser = UserService.call(req)
+  private async filterFrom (req: Request): Promise<UpdateOptions<Attributes<Identification>>> {
+    const user: CognitoUser = await UserService.call(req)
     const id = req.params.id
 
     return { where: { id, userId: user.userId } }
