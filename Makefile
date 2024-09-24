@@ -71,3 +71,5 @@ drop: drop-development drop-test
 migrate: migrate-development migrate-test
 
 rollback: rollback-development rollback-test
+
+redo: drop create migrate

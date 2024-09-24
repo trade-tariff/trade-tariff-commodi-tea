@@ -1,6 +1,7 @@
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios'
-import { type Description } from '../utils/descriptionsSampler'
 import { GoodsNomenclature } from '../models/goodsNomenclature'
+import { logger } from '../config/logging'
+import { type Description } from '../utils/descriptionsSampler'
 
 export class GoodsNomenclatureClient {
   static URL = 'https://www.trade-tariff.service.gov.uk'
@@ -34,6 +35,9 @@ export class GoodsNomenclatureClient {
       (sampleDescription.code.length === 8 && sampleDescription.code.endsWith('0000'))
     let response: AxiosResponse
     let normalisedCode = isHeading ? sampleDescription.code.slice(0, 4) : sampleDescription.code
+
+    logger.debug(`Searching for goods nomenclature with normalisedCode: ${normalisedCode}`)
+    logger.debug(`Searching for sampledDescription: ${JSON.stringify(sampleDescription)}`)
 
     try {
       response = await this.client.get(`${GoodsNomenclatureClient.SEARCH_PATH}${normalisedCode}`)

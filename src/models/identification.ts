@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize'
 import connection from '../config/connection'
+import User from './User'
 
 class Identification extends Model {
   id?: number
@@ -10,6 +11,8 @@ class Identification extends Model {
   answer?: object
   createdAt?: Date
   updatedAt?: Date
+  fullName?: string // This is presented as part of an aggregate query but does not exist in the model
+  score?: number // This is presented as part of an aggregate query but does not exist in the model
 
   toJson (): any {
     return {
@@ -42,6 +45,12 @@ Identification.init({
 }, {
   sequelize: connection,
   modelName: 'Identification'
+})
+
+Identification.belongsTo(User, {
+  foreignKey: {
+    name: 'userId'
+  }
 })
 
 export default Identification
