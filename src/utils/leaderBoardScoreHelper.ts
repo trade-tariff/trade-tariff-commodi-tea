@@ -1,6 +1,8 @@
 import type Identification from '../models/identification'
 import { logger } from '../config/logging'
 
+const MAXIMUM_LEADERS = 20
+
 export function computeScore (identifications: Identification[]): any[] {
   logger.debug('start => computeScore')
   logger.debug(identifications)
@@ -26,10 +28,12 @@ export function computeScore (identifications: Identification[]): any[] {
   const sortedScoreMap = new Map([...scoreMap.entries()].sort((a, b) => b[1] - a[1]))
   logger.debug('sorted scores')
   logger.debug(sortedScoreMap)
-  const leaders: any[] = []
+  let leaders: any[] = []
   sortedScoreMap.forEach((value, key) =>
     leaders.push({ fullName: key, score: value }))
   logger.debug('leaders')
   logger.debug(leaders)
+
+  leaders = leaders.slice(0, MAXIMUM_LEADERS)
   return leaders
 }
