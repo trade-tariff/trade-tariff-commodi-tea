@@ -7,6 +7,7 @@ import { LeaderboardPresenter } from '../presenters/leaderBoardPresenter'
 
 export class LeaderboardController {
   public async show (_req: Request, res: Response): Promise<void> {
+    const numberOfClassifiers = 10
     const result = await Identification.findAll({
       include: [{
         model: User,
@@ -31,7 +32,7 @@ export class LeaderboardController {
       ],
       raw: true
     })
-    const formattedData = LeaderboardPresenter.present(computeScore(result))
-    res.render('leaderboard', { formattedData })
+    const formattedData = LeaderboardPresenter.present(computeScore(result, numberOfClassifiers))
+    res.render('leaderboard', { formattedData, numberOfClassifiers })
   }
 }

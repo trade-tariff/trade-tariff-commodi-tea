@@ -1,9 +1,7 @@
 import type Identification from '../models/identification'
 import { logger } from '../config/logging'
 
-const MAXIMUM_LEADERS = 20
-
-export function computeScore (identifications: Identification[]): any[] {
+export function computeScore (identifications: Identification[], numberOfClassifiers: number): any[] {
   logger.debug('start => computeScore')
   logger.debug(identifications)
   const scoreMap = new Map<string, number>()
@@ -34,6 +32,6 @@ export function computeScore (identifications: Identification[]): any[] {
   logger.debug('leaders')
   logger.debug(leaders)
 
-  leaders = leaders.slice(0, MAXIMUM_LEADERS)
+  leaders = leaders.slice(0, numberOfClassifiers)
   return leaders
 }
