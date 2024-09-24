@@ -13,8 +13,9 @@
 
             <h1 class="govuk-heading-xl">Commodi-tea</h1>
 
+            {%- set classifierCaption = ["Top ", numberOfClassifiers, " Classifiers"] | join %}
             {{ govukTable({
-                caption: "Top 10 Classifers",
+                caption: classifierCaption,
                 captionClasses: "govuk-table__caption--l",
                 firstCellIsHeader: true,
                 head: formattedData.headers,
