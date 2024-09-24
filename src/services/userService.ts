@@ -23,11 +23,11 @@ export namespace UserService {
     console.info('req.appSession =>' + JSON.stringify(req.appSession))
     console.info('req.appSession =>' + req.appSession)
 
-    console.log('userProfile =>' + userProfile)
+    logger.debug('userProfile =>' + userProfile)
     if (userProfile === null) {
       if (env === 'production') throw new Error('User Profile is null, are you signed in?')
 
-      return {
+      const user: CognitoUser = {
         userId: 'local-development',
         email: '',
         emailVerified: true,
@@ -35,6 +35,8 @@ export namespace UserService {
         familyName: 'Doe',
         name: 'Joe'
       }
+
+      return await handleUserProfile(user)
     }
 
     if (req.oidc.isAuthenticated() === false) if (env === 'production') throw new Error('User not authenticated')
@@ -48,12 +50,27 @@ export namespace UserService {
 
     if (userId === '') throw new Error('User sub not set')
     if (email === '') throw new Error('Email not set')
-    await handleDbUser(userProfile as CognitoUser)
-    return { userId, email, emailVerified, username, familyName, name }
+
+    const user = {
+      userId,
+      email,
+      emailVerified,
+      username,
+      familyName,
+      name
+    }
+
+    return await handleUserProfile(user)
+  }
+
+  async function handleUserProfile (userProfile: CognitoUser): Promise<CognitoUser> {
+    await handleDbUser(userProfile)
+
+    return userProfile
   }
 
   async function handleDbUser (userProfile: CognitoUser): Promise<void> {
-    console.log('Calling handleDbUser')
+    logger.debug('Calling handleDbUser')
     try {
       const result = await User.findOrCreate({
         where: { userId: userProfile.userId },
@@ -63,7 +80,7 @@ export namespace UserService {
           fullName: userProfile.name + ' ' + userProfile.familyName
         }
       })
-      console.log('handleDbUser: ', result)
+      logger.debug('handleDbUser: ', result)
     } catch (error) {
       logger.error('Error in saving the user details', error)
     }

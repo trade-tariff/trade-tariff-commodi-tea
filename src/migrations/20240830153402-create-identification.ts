@@ -23,7 +23,7 @@ module.exports = {
         type: Sequelize.ENUM('pending', 'completed')
       },
       answer: {
-        type: Sequelize.JSONB
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
