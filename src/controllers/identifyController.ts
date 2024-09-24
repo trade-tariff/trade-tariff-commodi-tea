@@ -1,6 +1,7 @@
 import { type Request, type Response } from 'express'
 import { GoodsNomenclatureClient } from '../utils/goodsNomenclatureClient'
 import { type Description, DescriptionSampler } from '../utils/descriptionsSampler'
+import { type GoodsNomenclature } from '../models/goodsNomenclature'
 import Identification from '../models/identification'
 import { type CognitoUser, UserService } from '../services/userService'
 import { logger } from '../config/logging'
@@ -21,8 +22,25 @@ export class IdentifyController {
       this.sampler = await DescriptionSampler.build()
     }
 
-    const description: Description = this.sampler.sample()
-    const goodsNomenclature = await this.client.get(description)
+    let description: Description
+    let goodsNomenclature: GoodsNomenclature
+
+    try {
+      description = this.sampler.sample()
+      goodsNomenclature = await this.client.get(description)
+    } catch (error: any) {
+      logger.error('Error:', error)
+
+      try {
+        description = this.sampler.sample()
+        goodsNomenclature = await this.client.get(description)
+      } catch (error: any) {
+        logger.error('Error:', error)
+        res.status(500).render('500')
+
+        return
+      }
+    }
     const session = req.session ?? {}
     session.goodsNomenclature = goodsNomenclature
 
