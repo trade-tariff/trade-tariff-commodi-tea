@@ -67,12 +67,15 @@ export namespace UserService {
   async function handleDbUser (userProfile: CognitoUser): Promise<void> {
     logger.debug('Calling handleDbUser')
     try {
+      const now = new Date()
       const result = await User.findOrCreate({
         where: { userId: userProfile.userId },
         defaults: {
           userId: userProfile.username,
           email: userProfile.email,
-          fullName: userProfile.name + ' ' + userProfile.familyName
+          fullName: userProfile.name + ' ' + userProfile.familyName,
+          createdAt: now,
+          updatedAt: now
         }
       })
       logger.debug('handleDbUser: ', result)
