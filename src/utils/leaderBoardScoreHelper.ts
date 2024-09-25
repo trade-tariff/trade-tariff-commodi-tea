@@ -27,8 +27,9 @@ export function computeScore (identifications: Identification[], numberOfClassif
   logger.debug('sorted scores')
   logger.debug(sortedScoreMap)
   let leaders: any[] = []
+  let index = 1
   sortedScoreMap.forEach((value, key) =>
-    leaders.push({ fullName: key, score: value }))
+    leaders.push({ rank: index++, fullName: key, score: value }))
   logger.debug('leaders')
   logger.debug(leaders)
 

@@ -30,7 +30,8 @@ export class LeaderboardController {
       order: [
         ['score', 'DESC']
       ],
-      raw: true
+      raw: true,
+      limit: 1000
     })
     const formattedData = LeaderboardPresenter.present(computeScore(result, numberOfClassifiers))
     res.render('leaderboard', { formattedData, numberOfClassifiers })
