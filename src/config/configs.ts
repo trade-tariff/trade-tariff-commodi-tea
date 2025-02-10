@@ -1,37 +1,39 @@
-import dotenv from 'dotenv'
 import { type Options, type Dialect } from 'sequelize'
-
-dotenv.config({ path: '.env' })
 
 const envVars = process.env
 const environment: string = envVars.NODE_ENV ?? 'development'
-const username: string = envVars.POSTGRES_USER ?? envVars.USER ?? 'postgres'
-const dialect: Dialect = 'postgres'
-const database: string = envVars.POSTGRES_DB ?? `tea_${environment}`
 
-interface CustomOptions extends Options {
-  uri?: string
-}
+// interface CustomOptions extends Options {
+//   uri?: string,
+//   fpoSearch: {
+//     baseUrl: string,
+//     apiKey: string,
+//   }
+// }
 
-interface Configuration {
-  development: CustomOptions
-  test: CustomOptions
-  production: CustomOptions
-}
+// interface Configuration {
+//   development: CustomOptions
+//   test: CustomOptions
+//   production: CustomOptions
+// }
 
-const localConfiguration: Options = {
-  host: 'localhost',
-  dialect,
-  username,
-  database
-}
+// const localConfiguration: CustomOptions = {
+//   host: 'localhost',
+//   dialect,
+//   username,
+//   database,
+//   fpoSearch: {
+//     baseUrl: 'https://search.trade-tariff.service.gov.uk/fpo-code-search'
+//   }
+// }
 
-const configuration: Configuration = {
-  development: localConfiguration,
-  test: localConfiguration,
-  production: {
-    uri: envVars.DATABASE_URL ?? '',
-    dialect: 'postgres',
+const config = {
+  sequelize: {
+    uri: envVars.DATABASE_URL,
+    host: envVars.DATABASE_HOST,
+    dialect: 'postgres' as Dialect,
+    username: envVars.POSTGRES_USER ?? envVars.USER ?? 'postgres',
+    database: envVars.POSTGRES_DB ?? `tea_${environment}`,
     ssl: true,
     dialectOptions: {
       ssl: {
@@ -39,9 +41,11 @@ const configuration: Configuration = {
         rejectUnauthorized: false
       }
     }
+  },
+  fpoSearch: {
+    baseUrl: envVars.FPO_SEARCH_BASE_URL ?? 'https://search.trade-tariff.service.gov.uk/fpo-code-search',
+    apiKey: envVars.FPO_SEARCH_API_KEY ?? '',
   }
 }
-
-const config = configuration[environment as keyof Configuration]
 
 export default config
