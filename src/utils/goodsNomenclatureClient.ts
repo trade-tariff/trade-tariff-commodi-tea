@@ -31,6 +31,11 @@ export class GoodsNomenclatureClient {
   }
 
   private async getEndpoint (sampleDescription: Description): Promise<any> {
+    if(sampleDescription.code === undefined) {
+      // TODO: Handle the case where no code is identified
+      throw new Error('No code supplied')
+    }
+
     const isHeading = (sampleDescription.code.length === 6 && sampleDescription.code.endsWith('00')) ||
       (sampleDescription.code.length === 8 && sampleDescription.code.endsWith('0000'))
     let response: AxiosResponse
@@ -62,7 +67,6 @@ export class GoodsNomenclatureClient {
       }
     }
 
-    sampleDescription.normalised_code = normalisedCode
     return response.data
   }
 
