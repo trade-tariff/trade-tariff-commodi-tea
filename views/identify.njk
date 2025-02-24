@@ -38,7 +38,7 @@
 
             {%- set cnCodeText %}
                Is this the correct {{ goodsNomenclature.sampleDescription.request_digits }} digit CN Code?
-            {% endset %}
+            {%- endset %}
 
             <form action="/identifications" method="post">
             {{ govukRadios({

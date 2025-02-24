@@ -4,7 +4,6 @@
 {% from "govuk/components/cookie-banner/macro.njk" import govukCookieBanner %}
 {% from "govuk/components/skip-link/macro.njk" import govukSkipLink %}
 {% from "govuk/components/header/macro.njk" import govukHeader %}
-{% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/footer/macro.njk" import govukFooter %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
@@ -20,9 +19,7 @@
     }) }}
 {% endblock %}
 
-{%- set phaseBannerHtml %}
-    This is a new service – your <a class="govuk-link" href="{{ feedbackURL }}">feedback</a> will help us to improve it.
-{% endset %}
+
 {% block beforeContent %}
     {{ govukPhaseBanner({
         tag: {
@@ -33,32 +30,7 @@
 {% endblock %}
 
 {% block footer %}
-    {{ govukFooter({
-        meta: {
-            items: [
-                {
-                    href: config.urls.apiDocs,
-                    text: "API Documentation"
-                },
-                {
-                    href: config.urls.feedback,
-                    text: "Feedback"
-                },
-                {
-                    href: "/privacyPolicy",
-                    text: "Privacy policy "
-                },
-                {
-                    href: "/cookies",
-                    text: "Cookies"
-                },
-                {
-                    href: config.urls.termsAndConditions,
-                    text: "Terms and conditions"
-                }
-            ]
-        }
-    }) }}
+    {{ govukFooter({}) }}
 {% endblock %}
 
 {% block bodyEnd %}
