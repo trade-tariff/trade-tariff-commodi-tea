@@ -36,27 +36,27 @@ export class DescriptionSampler {
     do {
       description = this.descriptions[Math.floor(Math.random() * this.descriptions.length)]
       attempts++
-    } while(description.code === undefined && attempts < maxAttempts);
+    } while (description.code === undefined && attempts < maxAttempts)
 
-    return description;
+    return description
   }
 
-  async updateCodes(description: Description, digits: number = 8): Promise<Description> {
-    const result = await findCommodityCodes(description.request_description, digits, 1);
+  async updateCodes (description: Description, digits: number = 8): Promise<Description> {
+    const result = await findCommodityCodes(description.request_description, digits, 1)
 
-    if(result.length > 0) {
+    if (result.length > 0) {
       return {
         ...description,
         request_digits: digits,
         code: result[0].code,
-        score: result[0].score,
+        score: result[0].score
       }
     } else {
       return {
         request_description: description.request_description,
         request_digits: digits,
         code: undefined,
-        score: undefined,
+        score: undefined
       }
     }
   }

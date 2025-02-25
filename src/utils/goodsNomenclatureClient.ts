@@ -31,7 +31,7 @@ export class GoodsNomenclatureClient {
   }
 
   private async getEndpoint (sampleDescription: Description): Promise<any> {
-    if(sampleDescription.code === undefined) {
+    if (sampleDescription.code === undefined) {
       throw new Error('No code supplied')
     }
 
