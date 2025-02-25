@@ -3,10 +3,10 @@ import config from './configs'
 
 let sequelizeConnection: Sequelize
 
-if (config.sequelize.uri !== undefined) {
-  sequelizeConnection = new Sequelize(config.sequelize.uri, config.sequelize)
+if (config.uri !== undefined) {
+  sequelizeConnection = new Sequelize(config.uri, config)
 } else {
-  sequelizeConnection = new Sequelize(config.sequelize)
+  sequelizeConnection = new Sequelize(config)
 }
 
 export default sequelizeConnection

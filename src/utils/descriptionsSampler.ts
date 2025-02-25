@@ -29,12 +29,14 @@ export class DescriptionSampler {
   descriptions: Description[] = []
 
   sample (): Description {
-    let description;
+    let description
+    let attempts = 0
+    const maxAttempts = 10
 
-    // TODO: Update the UI to handle no results - we should be validating these too!
     do {
       description = this.descriptions[Math.floor(Math.random() * this.descriptions.length)]
-    } while(description.code !== undefined);
+      attempts++
+    } while(description.code === undefined && attempts < maxAttempts);
 
     return description;
   }
@@ -57,8 +59,6 @@ export class DescriptionSampler {
         score: undefined,
       }
     }
-
-
   }
 
   static async build (): Promise<DescriptionSampler> {

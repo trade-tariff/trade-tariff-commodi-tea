@@ -26,13 +26,12 @@ export class GoodsNomenclatureClient {
     if (searchResponse.data.type === 'exact_search') {
       return await this.getGoodsNomenclature(searchResponse, sampleDescription)
     } else {
-      throw new Error('Not found 2')
+      throw new Error('Goods Nomenclature Not found')
     }
   }
 
   private async getEndpoint (sampleDescription: Description): Promise<any> {
     if(sampleDescription.code === undefined) {
-      // TODO: Handle the case where no code is identified
       throw new Error('No code supplied')
     }
 

@@ -3,14 +3,14 @@ import connection from '../config/connection'
 import User from './User'
 
 class Identification extends Model {
-  id?: number
-  classifiedDescription?: object
-  classifiedDescriptionId?: number
-  userId?: string
-  state?: string
-  answer?: object
-  createdAt?: Date
-  updatedAt?: Date
+  declare id?: number
+  declare classifiedDescription?: object
+  declare classifiedDescriptionId?: number
+  declare userId?: string
+  declare state?: string
+  declare answer?: object
+  declare createdAt?: Date
+  declare updatedAt?: Date
   fullName?: string // This is presented as part of an aggregate query but does not exist in the model
   score?: number // This is presented as part of an aggregate query but does not exist in the model
 

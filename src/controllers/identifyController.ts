@@ -27,12 +27,18 @@ export class IdentifyController {
 
     try {
       description = this.sampler.sample()
+      logger.debug('Description : ', description)
+      description = await this.sampler.updateCodes(description)
+      logger.debug('Updated Description : ', description)
       goodsNomenclature = await this.client.get(description)
     } catch (error: any) {
       logger.error('Error:', error)
 
       try {
         description = this.sampler.sample()
+        logger.debug('Description : ', description)
+        description = await this.sampler.updateCodes(description)
+        logger.debug('Updated Description : ', description)
         goodsNomenclature = await this.client.get(description)
       } catch (error: any) {
         logger.error('Error:', error)
@@ -79,6 +85,7 @@ export class IdentifyController {
     })
 
     logger.debug('Identification:', newIdentification)
+    logger.debug(`Identification id : ${newIdentification.id}`)
 
     if (answer === 'yes' || answer === 'maybe') {
       res.redirect('/confirmation')
