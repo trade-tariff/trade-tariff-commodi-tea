@@ -1,5 +1,4 @@
 import config from '../config/configs'
-import { logger } from '../config/logging'
 
 interface FpoSearchFindCommodityCodeResult {
   code: string
