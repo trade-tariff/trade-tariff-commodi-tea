@@ -95,5 +95,9 @@ module "service" {
       name      = "COGNITO_OPEN_ID_SECRET"
       valueFrom = data.aws_secretsmanager_secret.cognito_open_id_secret.arn
     },
+    {
+      name      = "FPO_SEARCH_API_KEY"
+      valueFrom = data.aws_secretsmanager_secret.fpo_search_api_key.arn
+    },
   ]
 }
