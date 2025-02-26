@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "exec" {
       data.aws_secretsmanager_secret.cognito_open_id_client_id.arn,
       data.aws_secretsmanager_secret.cognito_open_id_client_secret.arn,
       data.aws_secretsmanager_secret.cognito_open_id_secret.arn,
-      data.aws_secretsmanager_secret.fpo_search_base_url.arn
+      data.aws_secretsmanager_secret.fpo_search_base_url.arn,
       data.aws_secretsmanager_secret.fpo_search_api_key.arn
     ]
   }
