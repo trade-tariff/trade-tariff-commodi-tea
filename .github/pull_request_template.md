@@ -6,9 +6,9 @@
 
 I have added/removed/altered:
 
-- [x] Added
-- [x] Removed
-- [x] Altered
+- [ ] Added
+- [ ] Removed
+- [ ] Altered
 
 ### Why?
 
@@ -16,8 +16,6 @@ I am doing this because:
 
 -
 
-### AC
+### ACs
 
-- Tested
-- Shared with stakeholders
-- Pair reviewed
+-
