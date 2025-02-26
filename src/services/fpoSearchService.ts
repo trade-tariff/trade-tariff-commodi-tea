@@ -1,4 +1,5 @@
 import config from '../config/configs'
+import { logger } from '../config/logging'
 
 interface FpoSearchFindCommodityCodeResult {
   code: string
@@ -16,6 +17,8 @@ export async function findCommodityCodes (description: string, digits: number = 
     limit
   }
 
+  logger.debug(`Fpo search on ${config.fpoSearch.baseUrl} with key ${config.fpoSearch.apiKey}`)
+
   try {
     const response = await fetch(config.fpoSearch.baseUrl, {
       method: 'POST',
@@ -28,6 +31,7 @@ export async function findCommodityCodes (description: string, digits: number = 
 
     const result = await response.json() as FpoSearchFindCommodityCodesResponse
 
+    logger.debug('Result : ', result)
     return result.results
   } catch (e) {
     throw new Error('Error getting commodity codes', { cause: e })
