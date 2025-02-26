@@ -3,6 +3,7 @@ import * as path from 'path'
 import YAML from 'yaml'
 
 import { logger } from '../config/logging'
+import { findCommodityCodes } from '../services/fpoSearchService'
 
 interface SamplingConfig {
   name: string
@@ -16,10 +17,9 @@ interface SamplingConfiguration {
 
 export interface Description {
   request_description: string
-  code: string
-  score: string
-  request_digits: '6' | '8'
-  normalised_code?: string
+  code?: string
+  score?: number
+  request_digits: number
 }
 
 export class DescriptionSampler {
@@ -29,9 +29,36 @@ export class DescriptionSampler {
   descriptions: Description[] = []
 
   sample (): Description {
-    const description = this.descriptions[Math.floor(Math.random() * this.descriptions.length)]
+    let description
+    let attempts = 0
+    const maxAttempts = 10
+
+    do {
+      description = this.descriptions[Math.floor(Math.random() * this.descriptions.length)]
+      attempts++
+    } while (description.code === undefined && attempts < maxAttempts)
 
     return description
+  }
+
+  async updateCodes (description: Description, digits: number = 8): Promise<Description> {
+    const result = await findCommodityCodes(description.request_description, digits, 1)
+
+    if (result.length > 0) {
+      return {
+        ...description,
+        request_digits: digits,
+        code: result[0].code,
+        score: result[0].score
+      }
+    } else {
+      return {
+        request_description: description.request_description,
+        request_digits: digits,
+        code: undefined,
+        score: undefined
+      }
+    }
   }
 
   static async build (): Promise<DescriptionSampler> {
@@ -47,9 +74,9 @@ export class DescriptionSampler {
       const percentage = config.percentage
 
       let sampledDescriptions: Description[] = descriptions.filter(description => {
-        const score = parseFloat(description.score)
+        const score = description.score
 
-        return score >= scoreRangeStart && score <= scoreRangeEnd
+        return score !== undefined && score >= scoreRangeStart && score <= scoreRangeEnd
       })
 
       sampledDescriptions = sampledDescriptions.slice(

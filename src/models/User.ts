@@ -2,8 +2,6 @@ import { Model, DataTypes } from 'sequelize'
 import connection from '../config/connection'
 
 class User extends Model {
-  userId?: string
-  fullName?: string
 }
 
 User.init({

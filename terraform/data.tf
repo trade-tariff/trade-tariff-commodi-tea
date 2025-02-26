@@ -54,3 +54,11 @@ data "aws_secretsmanager_secret" "cognito_open_id_client_secret" {
 data "aws_secretsmanager_secret" "cognito_open_id_secret" {
   name = "tea-cognito-secret"
 }
+
+data "aws_secretsmanager_secret" "fpo_search_base_url" {
+  name = "commodi-tea-fpo-search-base-url"
+}
+
+data "aws_secretsmanager_secret" "fpo_search_api_key" {
+  name = "commodi-tea-fpo-search-api-key"
+}

@@ -26,11 +26,15 @@ export class GoodsNomenclatureClient {
     if (searchResponse.data.type === 'exact_search') {
       return await this.getGoodsNomenclature(searchResponse, sampleDescription)
     } else {
-      throw new Error('Not found 2')
+      throw new Error('Goods Nomenclature Not found')
     }
   }
 
   private async getEndpoint (sampleDescription: Description): Promise<any> {
+    if (sampleDescription.code === undefined) {
+      throw new Error('No code supplied')
+    }
+
     const isHeading = (sampleDescription.code.length === 6 && sampleDescription.code.endsWith('00')) ||
       (sampleDescription.code.length === 8 && sampleDescription.code.endsWith('0000'))
     let response: AxiosResponse
@@ -62,7 +66,6 @@ export class GoodsNomenclatureClient {
       }
     }
 
-    sampleDescription.normalised_code = normalisedCode
     return response.data
   }
 
