@@ -1,14 +1,14 @@
 ### Jira link
 
-FPO-323
+[HMRC-<TODO>](https://transformuk.atlassian.net/browse/HMRC-<TODO>)
 
 ### What?
 
 I have added/removed/altered:
 
-- [x] Added
-- [x] Removed
-- [x] Altered
+- [ ] Added
+- [ ] Removed
+- [ ] Altered
 
 ### Why?
 
@@ -16,8 +16,6 @@ I am doing this because:
 
 -
 
-### AC
+### ACs
 
-- Tested
-- Shared with stakeholders
-- Pair reviewed
+-
