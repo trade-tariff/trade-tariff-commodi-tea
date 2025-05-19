@@ -1,9 +1,12 @@
 module "service" {
-  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/ecs-service?ref=aws/ecs-service-v1.12.0"
+  source = "git@github.com:trade-tariff/trade-tariff-platform-terraform-modules.git//aws/ecs-service?ref=aws/ecs-service-v1.16.0"
 
-  region = var.region
+  region                    = var.region
+  container_definition_kind = "db-backed"
+  init_container_command    = local.init_command
 
-  service_name  = local.service
+
+  service_name  = "tea"
   service_count = var.service_count
 
   private_dns_namespace = "tariff.internal"
@@ -25,9 +28,6 @@ module "service" {
 
   cpu    = var.cpu
   memory = var.memory
-
-  init_container         = true
-  init_container_command = local.init_command
 
   task_role_policy_arns = [
     aws_iam_policy.task.arn
