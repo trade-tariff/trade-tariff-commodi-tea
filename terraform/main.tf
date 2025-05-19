@@ -5,7 +5,6 @@ module "service" {
   container_definition_kind = "db-backed"
   init_container_command    = local.init_command
 
-
   service_name  = "tea"
   service_count = var.service_count
 
