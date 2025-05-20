@@ -3,11 +3,6 @@ variable "environment" {
   type        = string
 }
 
-variable "region" {
-  description = "AWS region to use."
-  type        = string
-}
-
 variable "docker_tag" {
   description = "Image tag to use."
   type        = string
@@ -28,11 +23,6 @@ variable "max_capacity" {
   type        = number
 }
 
-variable "base_domain" {
-  description = "URL of the service."
-  type        = string
-}
-
 variable "cpu" {
   description = "CPU units to use."
   type        = number
@@ -41,9 +31,4 @@ variable "cpu" {
 variable "memory" {
   description = "Memory to allocate in MB. Powers of 2 only."
   type        = number
-}
-
-variable "log_level" {
-  description = "Log level to use."
-  type        = string
 }

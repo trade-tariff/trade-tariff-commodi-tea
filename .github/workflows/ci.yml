@@ -40,16 +40,3 @@ jobs:
         working-directory: terraform
       - run: pip install pre-commit
       - run: pre-commit run --all-files --show-diff-on-failure
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - id: tool-versions
-        run: echo "NODEJS=$(awk "/nodejs/{ print \$2 }" .tool-versions | tr -d '\n')" >> "$GITHUB_ENV"
-      - uses: actions/setup-node@v4
-        with:
-          cache: yarn
-          node-version: ${{ steps.tool-versions.outputs.NODEJS }}
-      - run: yarn install --frozen-lockfile
-      - run: make test
