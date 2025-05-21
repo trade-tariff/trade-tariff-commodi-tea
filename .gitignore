@@ -138,3 +138,6 @@ package-lock.json
 # Intellij
 .idea/
 .vscode
+
+# Nix
+.envrc
