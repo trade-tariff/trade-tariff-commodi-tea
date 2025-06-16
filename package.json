@@ -29,7 +29,7 @@
     "pg": "^8.16.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.6",
-    "sequelize-cli": "^6.6.2",
+    "sequelize-cli": "^6.6.3",
     "serve-favicon": "^2.5.0",
     "winston": "^3.17.0",
     "yaml": "^2.8.0"
