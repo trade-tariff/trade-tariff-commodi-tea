@@ -1,4 +1,7 @@
-FROM node:24.1.0-alpine3.20 AS builder
+ARG NODE_VERSION=24
+ARG ALPINE_VERSION=3.22
+
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS builder
 WORKDIR /app
 
 COPY package.json yarn.lock /app/
@@ -8,7 +11,8 @@ COPY . /app/
 
 RUN make build
 
-FROM node:24.1.0-alpine3.20
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS production
+
 WORKDIR /app
 
 COPY REVISION package.json yarn.lock /app/
