@@ -42,7 +42,7 @@
     "@types/express": "^5.0.3",
     "@types/jasmine": "^5.1.8",
     "@types/morgan": "^1.9.10",
-    "@types/node": "^24.0.8",
+    "@types/node": "^24.0.10",
     "@types/nunjucks": "^3.2.6",
     "@types/sequelize": "^4.28.20",
     "@types/serve-favicon": "^2.5.7",
