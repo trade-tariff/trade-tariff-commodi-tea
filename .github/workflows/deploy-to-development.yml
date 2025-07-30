@@ -1,9 +1,12 @@
 name: Deploy to development
 
 on:
-  push:
-    branches-ignore:
-      - main
+  pull_request:
+    types:
+      - synchronize
+      - reopened
+      - labeled
+      - unlabeled
   workflow_dispatch:
 
 permissions:
