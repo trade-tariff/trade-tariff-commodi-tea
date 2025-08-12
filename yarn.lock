@@ -473,15 +473,15 @@
   resolved "https://registry.yarnpkg.com/@rtsao/scc/-/scc-1.1.0.tgz#927dd2fae9bc3361403ac2c7a00c32ddce9ad7e8"
   integrity sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==
 
+"@sentry/core@10.4.0":
+  version "10.4.0"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-10.4.0.tgz#34cfcfbe6c6626d4c14d30cccc6e2215d3b8e3b5"
+  integrity sha512-QJRDUwnMe0QckGFzq42R/ulUEdN7iGvpDGNQD1Tho/0zkCz9vwBvskXj3MVFzhXMdLnqdAz8ximFdz/zdufjsA==
+
 "@sentry/core@9.33.0":
   version "9.33.0"
   resolved "https://registry.yarnpkg.com/@sentry/core/-/core-9.33.0.tgz#34870c1c5248639e2b1453be57ad7cdb039e9d3a"
   integrity sha512-0mtJAU+x10+q5aV/txyeuPjJ0TmObcD701R0tY0s71yJJOltqqMrmgNpqyuMI/VOASuzTZesiMYdbG6xb3zeSw==
-
-"@sentry/core@9.34.0":
-  version "9.34.0"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-9.34.0.tgz#932be2112635e0b6fea97b27442de6c1d9c9516c"
-  integrity sha512-M/zikVaE3KLkhCFDyrHB35sF7pVkB2RPy07BcRsdFsSsdpjoG+Zq2Sxth2tMTbjd0x9Vtb/X6LVjyCj9GSEvVg==
 
 "@sentry/node@^9.33.0":
   version "9.33.0"
@@ -530,12 +530,12 @@
   dependencies:
     "@sentry/core" "9.33.0"
 
-"@sentry/types@^9.34.0":
-  version "9.34.0"
-  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-9.34.0.tgz#a19fd4a233da8e512ed0d10005ae110990680204"
-  integrity sha512-ZGZ2tTBBRSYxKbPzw80+slB6tUvugd7KLQAkoHlx9DQI06FaQLoJx67LQDUYLXO22tsiwOlWfLtSzJKl4I6ljQ==
+"@sentry/types@^10.4.0":
+  version "10.4.0"
+  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-10.4.0.tgz#1134b1906b2a7a6c7784a84b4aebf58f69a41a07"
+  integrity sha512-iHFodnIMxyksMN3cVyD/m0z8PppAfEpWBvIfxuH/ciflhupoibJiY1xGz+wxuvZVh8lh+FpIlrfEYhnNPAPLlA==
   dependencies:
-    "@sentry/core" "9.34.0"
+    "@sentry/core" "10.4.0"
 
 "@sideway/address@^4.1.5":
   version "4.1.5"
