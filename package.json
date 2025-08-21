@@ -40,7 +40,7 @@
     "@sentry/types": "^10.4.0",
     "@types/cookie-parser": "^1.4.9",
     "@types/express": "^5.0.3",
-    "@types/jasmine": "^5.1.8",
+    "@types/jasmine": "^5.1.9",
     "@types/morgan": "^1.9.10",
     "@types/node": "^24.0.15",
     "@types/nunjucks": "^3.2.6",
