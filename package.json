@@ -24,7 +24,7 @@
     "govuk-frontend": "^5.11.1",
     "helmet": "^8.1.0",
     "http-errors": "~2.0.0",
-    "morgan": "^1.10.0",
+    "morgan": "^1.10.1",
     "nunjucks": "^3.2.4",
     "pg": "^8.16.3",
     "pg-hstore": "^2.3.4",
@@ -35,9 +35,9 @@
     "yaml": "^2.8.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.33.0",
+    "@eslint/js": "^9.34.0",
     "@sentry/node": "^10.5.0",
-    "@sentry/types": "^10.4.0",
+    "@sentry/types": "^10.5.0",
     "@types/cookie-parser": "^1.4.9",
     "@types/express": "^5.0.3",
     "@types/jasmine": "^5.1.9",
@@ -59,7 +59,7 @@
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2",
-    "typescript-eslint": "^8.40.0"
+    "typescript-eslint": "^8.41.0"
   },
   "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }
