@@ -21,7 +21,7 @@
     "express-nunjucks": "^3.1.2",
     "express-openid-connect": "^2.19.2",
     "express-validator": "^7.2.1",
-    "govuk-frontend": "^5.11.2",
+    "govuk-frontend": "^5.12.0",
     "helmet": "^8.1.0",
     "http-errors": "~2.0.0",
     "morgan": "^1.10.1",
