@@ -488,10 +488,10 @@
   resolved "https://registry.yarnpkg.com/@sentry/core/-/core-10.16.0.tgz#4a17d185f06c9de035fc2aa32fd9557acaaf0003"
   integrity sha512-jGcigU8kU8DfmTjWoLUpftgkayWjKLPBWm8TN3OJOevoQ319MwqoyukWXTMVu4FoyH+Vw6+xovDqMgPd/Mexsg==
 
-"@sentry/core@10.5.0":
-  version "10.5.0"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-10.5.0.tgz#191fa6f08020858903496dfad188d48c7cd55061"
-  integrity sha512-jTJ8NhZSKB2yj3QTVRXfCCngQzAOLThQUxCl9A7Mv+XF10tP7xbH/88MVQ5WiOr2IzcmrB9r2nmUe36BnMlLjA==
+"@sentry/core@10.17.0":
+  version "10.17.0"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-10.17.0.tgz#ea0851532bd6e407e9332e0200d90b34b556c3f5"
+  integrity sha512-UVIvxSzS0n5QbIDPyFf0WX9I77Of1bcr6a0sCEKfjhJGmGQ8mFWoWgR2gF4wcPw60XUrzbryCr79eOsIHLQ5cw==
 
 "@sentry/node-core@10.16.0":
   version "10.16.0"
@@ -550,12 +550,12 @@
   dependencies:
     "@sentry/core" "10.16.0"
 
-"@sentry/types@^10.5.0":
-  version "10.5.0"
-  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-10.5.0.tgz#adc3ccc62b03d86cc8f7df9db3d960c1ee8bf057"
-  integrity sha512-zO9eu42WvOVXigD30UCpDP7UPjzzbbCqJi//ICZ0hyViSEF/YtsOWJtct8y2DNEebvQCyUbc3jBFNZsI9GJJpA==
+"@sentry/types@^10.17.0":
+  version "10.17.0"
+  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-10.17.0.tgz#d7e6b14e1dc2a9227feffbe7a74b6c3fb22d40ea"
+  integrity sha512-94NJRIvdYTc18+fVB9PcF+ulpJjZCRXk8o/dn+YJOc8T4/ZlLofLfYew8M4o2GTkvlhC55GCQW484bvzl9OOpw==
   dependencies:
-    "@sentry/core" "10.5.0"
+    "@sentry/core" "10.17.0"
 
 "@sideway/address@^4.1.5":
   version "4.1.5"
