@@ -35,7 +35,7 @@
     "yaml": "^2.8.2"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
+    "@eslint/js": "^9.39.2",
     "@sentry/node": "^10.30.0",
     "@sentry/types": "^10.29.0",
     "@types/cookie-parser": "^1.4.10",
