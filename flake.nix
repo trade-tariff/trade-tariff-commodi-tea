@@ -7,10 +7,10 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { system = system; config.allowUnfree = true; };
-        clean = pkgs.writeScriptBin "clean" ''cd terraform && rm -rf .terraform && rm -rf .terraform.lock.hcl'';
-        init = pkgs.writeScriptBin "init" ''cd terraform && terraform init -backend=false'';
-        lint = pkgs.writeScriptBin "lint" ''pre-commit run --all-files --show-diff-on-failure'';
-        update-providers = pkgs.writeScriptBin "update-providers" ''clean && init && lint'';
+        clean = pkgs.writeShellScriptBin "clean" ''cd terraform && rm -rf .terraform && rm -rf .terraform.lock.hcl'';
+        init = pkgs.writeShellScriptBin "init" ''cd terraform && terraform init -backend=false'';
+        lint = pkgs.writeShellScriptBin "lint" ''pre-commit run --all-files --show-diff-on-failure'';
+        update-providers = pkgs.writeShellScriptBin "update-providers" ''clean && init && lint'';
       in {
         devShells.default = pkgs.mkShell {
           buildInputs = [
