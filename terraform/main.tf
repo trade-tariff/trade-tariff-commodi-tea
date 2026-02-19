@@ -32,5 +32,5 @@ module "service" {
 
   enable_ecs_exec = true
 
-  service_environment_config = local.secret_env_vars
+  service_environment_config = local.commoditea_service_env_vars
 }
