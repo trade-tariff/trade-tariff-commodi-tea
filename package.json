@@ -37,7 +37,7 @@
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "@sentry/node": "^10.39.0",
-    "@sentry/types": "^10.38.0",
+    "@sentry/types": "^10.39.0",
     "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.6",
     "@types/jasmine": "^6.0.0",
