@@ -32,3 +32,7 @@ data "aws_secretsmanager_secret_version" "this" {
 data "aws_secretsmanager_secret" "ecs_tls_certificate" {
   name = "ecs-tls-certificate"
 }
+
+data "aws_secretsmanager_secret_version" "ecs_tls_certificate" {
+  secret_id = data.aws_secretsmanager_secret.ecs_tls_certificate.id
+}
