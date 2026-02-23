@@ -2079,10 +2079,10 @@ express-nunjucks@^3.1.2:
   dependencies:
     nunjucks-async-loader "^2.1.3"
 
-express-openid-connect@^2.19.3:
-  version "2.19.3"
-  resolved "https://registry.yarnpkg.com/express-openid-connect/-/express-openid-connect-2.19.3.tgz#ed537f13ca585cdb00a09d218e9d0184c7fffb02"
-  integrity sha512-3XTQBa6Bzuw1GozlIQcruJ7vaWkjHaSDHTTJFuAvQwq/B42Brzn/MiVQUsxPXHnLCs/tN9Scg+G12dS2RGgT4Q==
+express-openid-connect@^2.19.4:
+  version "2.19.4"
+  resolved "https://registry.yarnpkg.com/express-openid-connect/-/express-openid-connect-2.19.4.tgz#ad8f564dbb7291e941e1b7657961af352f614132"
+  integrity sha512-3YFPZ4MgUPhwfHbCaJKEij7uTc0vF4KpGKsuc3D1IhNMooiP6w8p1HBaaDQOE2KaAas22UghxVECxPpcC/gfOA==
   dependencies:
     base64url "^3.0.1"
     clone "^2.1.2"
