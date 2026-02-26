@@ -19,12 +19,16 @@ import mainNavigationOptions from './config/mainNavigation'
 import { configureAuth } from './config/cognitoAuth'
 import { httpRequestLoggingMiddleware, logger } from './config/logging'
 import { HealthchecksController } from './controllers/healthchecksController'
+import * as https from 'node:https'
 
 initEnvironment()
 
 const app: Express = express()
 const isProduction = (app.get('env') ?? 'development') === 'production'
 const port = process.env.PORT ?? 8080
+const sslCert = process.env.SSL_CERT_PEM
+const sslKey = process.env.SSL_KEY_PEM
+const sslPort = process.env.SSL_PORT ?? 8443
 const cookieSigningSecret = process.env.COOKIE_SIGNING_SECRET ?? ''
 const templateConfig: nunjucks.ConfigureOptions = {
   autoescape: true,
@@ -100,3 +104,20 @@ app.use(function (err: HttpError, _req: Request, res: Response, _next: NextFunct
 app.listen(port, () => {
   logger.info(`Server listening on ${port}`)
 })
+
+if ((sslCert != null) && (sslKey != null)) {
+  https
+    .createServer(
+      {
+        cert: sslCert,
+        key: sslKey
+      },
+      app
+    )
+    .listen(sslPort, () => {
+      logger.info(`HTTPS listening on port ${sslPort}`)
+    })
+    .on('error', (err: Error) => {
+      logger.error(`HTTPS server error: ${err.message}`, err)
+    })
+}
