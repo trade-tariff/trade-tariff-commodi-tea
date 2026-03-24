@@ -30,9 +30,9 @@ RUN addgroup -S tariff && \
   chown -R tariff:tariff /app
 USER tariff
 
-ENV PORT=8080 \
+ENV SSL_PORT=8443 \
   NODE_ENV=production
 
-HEALTHCHECK CMD nc -z 0.0.0.0 $PORT
+HEALTHCHECK CMD nc -z 0.0.0.0 $SSL_PORT
 
 CMD ["yarn", "run", "start"]

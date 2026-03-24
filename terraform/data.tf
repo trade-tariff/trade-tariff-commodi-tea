@@ -13,10 +13,6 @@ data "aws_subnets" "private" {
   }
 }
 
-data "aws_lb_target_group" "this" {
-  name = "tea"
-}
-
 data "aws_lb_target_group" "this_https" {
   name = "tea-https"
 }
