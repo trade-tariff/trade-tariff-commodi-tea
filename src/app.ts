@@ -101,9 +101,11 @@ app.use(function (err: HttpError, _req: Request, res: Response, _next: NextFunct
   }
 })
 
-app.listen(port, () => {
-  logger.info(`Server listening on ${port}`)
-})
+if (app.get('env') === 'development') {
+  app.listen(port, () => {
+    logger.info(`Server listening on ${port}`)
+  })
+}
 
 if ((sslCert != null) && (sslKey != null)) {
   https
